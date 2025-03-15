@@ -194,7 +194,7 @@ const startEditingOrder = (order) => {
           onClick={() => handleSendNotification(order._id, order.email, order.name, order.completionPercentage)}
           className="bg-green-500 py-2 px-4 rounded-full text-white text-sm hover:bg-green-600 transition"
         >
-          Send Notification
+          Notify
         </button>
         <button
           onClick={() => handleDelete(order._id)}

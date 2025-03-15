@@ -3,7 +3,7 @@ import { FiShoppingBag, FiUser, FiMenu, FiX } from "react-icons/fi";
 import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useAuth } from "../context/AuthContext";
-import logoImg from "../assets/wahret-zmen-logo n°2.png";
+import logoImg from "../../src/assets/Logo/Logo Boutique Wahret Zmen.jpg";
 import "../Styles/StylesNavbar.css";
 
 const Navbar = () => {
