@@ -298,3 +298,19 @@
 
 
 
+.user-avatar-btn {
+    background: none !important; /* Removes any background color */
+    border: none; /* Ensures no border is applied */
+    padding: 5px; /* Adjust padding if needed */
+    border-radius: 50%; /* Keeps it circular if needed */
+}
+
+.user-avatar-btn:focus,
+.user-avatar-btn:hover {
+    background: none !important; /* Prevents background from changing */
+}
+
+.user-icon.logged-in {
+    color: #007BFF !important; /* Keeps the icon blue */
+    background: none !important; /* Removes background */
+}

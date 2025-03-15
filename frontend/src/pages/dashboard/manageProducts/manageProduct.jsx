@@ -1,16 +1,14 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import {
   useDeleteProductMutation,
-  useGetAllProductsQuery, // ✅ Fixed Import
+  useGetAllProductsQuery,
 } from "../../../redux/features/products/productsApi";
 import Swal from "sweetalert2";
 
 const ManageProducts = () => {
-  const { data: products, isLoading, isError, refetch } = useGetAllProductsQuery(); // ✅ Fixed Hook
+  const { data: products, isLoading, isError, refetch } = useGetAllProductsQuery();
   const [deleteProduct] = useDeleteProductMutation();
 
-  // ✅ Handle deleting a product with confirmation
   const handleDeleteProduct = async (id) => {
     try {
       const result = await Swal.fire({
@@ -24,89 +22,82 @@ const ManageProducts = () => {
       });
 
       if (result.isConfirmed) {
-        await deleteProduct(id).unwrap();
-        Swal.fire("Deleted!", "The product has been deleted.", "success");
-        refetch();
+        console.log("Deleting product with ID:", id); // Debugging log
+        const response = await deleteProduct(id).unwrap();
+
+        if (response?.success) {
+          Swal.fire("Deleted!", "The product has been deleted.", "success");
+          refetch();
+        } else {
+          throw new Error("Failed to delete product");
+        }
       }
     } catch (error) {
-      Swal.fire("Error!", "Failed to delete product. Please try again.", "error");
+      console.error("Delete error:", error);
+      Swal.fire("Error!", error.message || "Failed to delete product. Please try again.", "error");
     }
   };
 
-  if (isLoading) return <div className="text-center text-gray-600">Loading products...</div>;
-  if (isError) return <div className="text-center text-red-500">Error loading products. Try again later.</div>;
-
   return (
-    <section className="py-10 bg-blueGray-50">
-      <div className="container mx-auto px-4">
-        <div className="bg-white shadow-lg rounded">
-          <div className="flex justify-between items-center p-4 border-b">
-            <h3 className="text-xl font-semibold text-gray-800">Manage Products</h3>
-            <Link to="/dashboard/add-product">
-              <button className="bg-indigo-500 text-white text-sm font-bold uppercase px-4 py-2 rounded hover:bg-indigo-600">
-                Add Product
-              </button>
-            </Link>
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="min-w-full bg-white">
-              <thead className="bg-gray-100">
+    <section className="p-6 bg-gray-100 min-h-screen font-sans">
+      <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden text-gray-800 text-base">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse text-sm">
+            <thead>
+              <tr className="bg-gray-200 text-gray-700 text-sm font-semibold">
+                <th className="p-4 border">#</th>
+                <th className="p-4 border">Title</th>
+                <th className="p-4 border">Category</th>
+                <th className="p-4 border">Price</th>
+                <th className="p-4 border">Stock</th>
+                <th className="p-4 border">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {isLoading && (
                 <tr>
-                  <th className="px-6 py-3 border">#</th>
-                  <th className="px-6 py-3 border">Title</th>
-                  <th className="px-6 py-3 border">Category</th>
-                  <th className="px-6 py-3 border">Price</th>
-                  <th className="px-6 py-3 border">Stock</th>
-                  <th className="px-6 py-3 border">Actions</th>
+                  <td colSpan="6" className="text-center p-6">Loading...</td>
                 </tr>
-              </thead>
-
-              <tbody>
-                {isLoading && (
-                  <tr>
-                    <td colSpan="6" className="text-center py-4">Loading...</td>
+              )}
+              {products && products.length > 0 ? (
+                products.map((product, index) => (
+                  <tr key={product._id} className="border-b">
+                    <td className="p-4 border">{index + 1}</td>
+                    <td className="p-4 border">{product.title}</td>
+                    <td className="p-4 border capitalize">{product.category}</td>
+                    <td className="p-4 border text-green-600 font-bold">${product.newPrice}</td>
+                    <td className="p-4 border">
+                      <span className={
+                        product.stockQuantity === 0
+                          ? "text-red-500 font-semibold"
+                          : "text-yellow-600 font-semibold"
+                      }>
+                        Stock: {product.stockQuantity}
+                      </span>
+                    </td>
+                    <td className="p-4 border flex gap-2">
+                      <Link
+                        to={`/dashboard/edit-product/${product._id}`}
+                        className="bg-blue-500 text-white px-3 py-1 rounded text-sm font-medium hover:bg-blue-700"
+                      >
+                        Edit
+                      </Link>
+                      <button
+                        onClick={() => handleDeleteProduct(product._id)}
+                        className="bg-red-500 text-white rounded px-3 py-1 text-sm font-medium hover:bg-red-700"
+                      >
+                        Delete
+                      </button>
+                    </td>
                   </tr>
-                )}
-
-                {products && products.length > 0 ? (
-                  products.map((product, index) => (
-                    <tr key={product._id}>
-                      <td className="px-6 py-4 border">{index + 1}</td>
-                      <td className="px-6 py-4 border">{product.title}</td>
-                      <td className="px-6 py-4 border capitalize">{product.category}</td>
-                      <td className="px-6 py-4 border text-green-600 font-bold">${product.newPrice}</td>
-                      <td className="px-6 py-4 border">
-                        {product.stockQuantity > 0 ? (
-                          <span className="text-yellow-600">Stock: {product.stockQuantity}</span>
-                        ) : (
-                          <span className="text-red-500">Out of Stock</span>
-                        )}
-                      </td>
-                      <td className="px-6 py-4 border flex gap-2">
-                        <Link
-                          to={`/dashboard/edit-product/${product._id}`}
-                          className="text-indigo-600 hover:underline"
-                        >
-                          Edit
-                        </Link>
-                        <button
-                          onClick={() => handleDeleteProduct(product._id)}
-                          className="bg-red-500 text-white rounded px-3 py-1 hover:bg-red-700"
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="6" className="text-center py-4">No products found.</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6" className="text-center p-6">No products found.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
     </section>

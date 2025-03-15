@@ -1,5 +1,4 @@
-.container-Products {margin-top: 8% !important; }
-
+.container-Products {margin-top: 8%;}
 
 /* Wahret Zmen Loader */
 @keyframes spin {
@@ -76,5 +75,39 @@
   .wahret-zmen-btn:active {
     transform: translateY(0); /* Return to normal state when clicked */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Return to original shadow */
+  }
+  
+
+
+  .category-title {
+    font-size: 1.6rem; /* Slightly larger for emphasis */
+    font-weight: 700;
+    font-family: 'Merriweather', serif; /* Elegant, premium font */
+    text-align: center;
+    color: #8A5D3B; /* Warm, rich brown */
+    text-transform: uppercase; /* Adds sophistication */
+    letter-spacing: 1.2px;
+    margin-bottom: 0.5rem; /* Space before selector */
+    position: relative;
+    display: inline-block;
+  }
+  
+  .category-title::before,
+  .category-title::after {
+    content: "";
+    width: 40px; /* Decorative lines */
+    height: 3px;
+    background: linear-gradient(to right, #D4AF37, #A67C52); /* Gold gradient */
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+  }
+  
+  .category-title::before {
+    left: -50px;
+  }
+  
+  .category-title::after {
+    right: -50px;
   }
   

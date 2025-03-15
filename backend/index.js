@@ -33,6 +33,7 @@ app.use("/api/orders", require("./src/orders/order.route"));
 app.use("/api/auth", require("./src/users/user.route"));
 app.use("/api/admin", require("./src/stats/admin.stats"));
 app.use("/api", require("./src/routes/uploadRoutes"));
+app.use("/api/contact", require("./src/contact-form/contact-form.route"));
 
 const connectDB = async () => {
   try {

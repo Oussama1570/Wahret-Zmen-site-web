@@ -16,15 +16,12 @@ import ManageProducts from "../pages/dashboard/manageProducts/ManageProducts";
 import AddProduct from "../pages/dashboard/addProduct/AddProduct";
 import UpdateProduct from "../pages/dashboard/EditProduct/UpdateProduct";
 import UserDashboard from "../pages/dashboard/users/UserDashboard";
-import ProductsPage from "../pages/Products.jsx";  
-import WishlistPage from "../pages/WhishLit.jsx";  
+import ProductsPage from "../pages/Products.jsx";
 import ContactPage from "../pages/Contact.jsx";
-import AboutPage  from "../pages/About.jsx"; 
+import AboutPage from "../pages/About.jsx";
 import UpdateOrder from "../pages/dashboard/EditOrder/UpdateOrder.jsx";
 import AddOrder from "../pages/dashboard/addOrder/addOrder.jsx";
-import ManageOrders from './../pages/dashboard/manageOrders/manageOrder';
-
-
+import ManageOrders from "../pages/dashboard/manageOrders/manageOrder";
 
 const router = createBrowserRouter([
   {
@@ -45,7 +42,6 @@ const router = createBrowserRouter([
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
       { path: "/cart", element: <CartPage /> },
-      { path: "/wishlist", element: <WishlistPage /> },
       { path: "/contact", element: <ContactPage /> },
       {
         path: "/checkout",

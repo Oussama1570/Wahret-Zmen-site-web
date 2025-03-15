@@ -5,6 +5,7 @@ import SelectorsPageProducts from "../components/SelectorProductsPage.jsx";
 import SearchInput from "../components/SearchInput.jsx"; // ✅ Import SearchInput Component
 import "../Styles/StylesProducts.css";
 import { Helmet } from "react-helmet";
+import FadeInSection from "../Animations/FadeInSection"; // ✅ Import Fade-in component
 
 // Loader component for Wahret Zmen
 const WahretZmenLoader = () => (
@@ -39,46 +40,75 @@ const Products = () => {
   };
 
   return (
-    <div className="container mx-auto py-10 px-4 container-Products">
-      {/* Set the title for the Product Page */}
-      <Helmet>
-        <title> - Discover our Products | Traditional Clothing</title> {/* Dynamic product title */}
+    <FadeInSection>
+      <div className="container mx-auto py-10 px-4 container-Products">
+        {/* Set the title for the Product Page */}
+        <Helmet>
+          <title>Wahret Zmen - Timeless Elegance in Traditional Clothing</title>
+        </Helmet>
+
+        {/* 🏷️ Page Title */}
+        <FadeInSection>
+        <FadeInSection>
+  <h2 className="text-4xl font-bold font-serif text-center mb-6 drop-shadow-lg bg-gradient-to-r from-[#D4AF37] to-[#A67C52] bg-clip-text text-transparent hover:scale-105 transition-transform duration-300 ease-in-out">
+    Wahret Zmen Collection
+  </h2>
+</FadeInSection>
+
+        </FadeInSection>
+
         
-      </Helmet>
-      {/* Title */}
-      <h2 className="text-3xl font-semibold text-gray-800 text-center mb-6">🛍️ Our Products</h2>
 
-      {/* Filter & Search Section */}
-      <div className="mb-8 flex flex-col items-center space-y-4">
-        <SelectorsPageProducts options={categories} onSelect={setSelectedCategory} label="Category" />
+        {/* 📜 Wahret Zmen Boutique Overview */}
+        <FadeInSection delay={0.2}>
+          <div className="text-center text-gray-700 max-w-3xl mx-auto mb-8 leading-relaxed">
+            
+            <p className="mt-4 text-lg">
+              At <span className="text-[#A67C52] font-semibold">Wahret Zmen</span>, we preserve the essence of  
+              Tunisian artistry by blending classic techniques with modern refinement. Whether you seek  
+              a luxurious piece for a special occasion or a timeless outfit, our collection is designed  
+              to celebrate the beauty of tradition.
+            </p>
+          </div>
+        </FadeInSection>
 
-        {/* ✅ Pass setSearchTerm to SearchInput */}
-        <SearchInput setSearchTerm={setSearchTerm} />
+        {/* 🔎 Filter & Search Section */}
+<FadeInSection delay={0.3}>
+  <div className="mb-8 flex flex-col items-center space-y-4">
+    <h3 className="category-title">Category</h3>
+    <SelectorsPageProducts options={categories} onSelect={setSelectedCategory} />
+    <SearchInput setSearchTerm={setSearchTerm} />
+  </div>
+</FadeInSection>
+
+
+        {/* 🛍️ Products Grid */}
+        <FadeInSection delay={0.4}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {filteredProducts.length > 0 ? (
+              filteredProducts.map((product, index) => (
+                <ProductCard key={index} product={product} />
+              ))
+            ) : (
+              <p className="col-span-full text-center text-gray-500">No products found.</p>
+            )}
+          </div>
+        </FadeInSection>
+
+        {/* 🔄 Load More Button and Loader */}
+        <FadeInSection delay={0.5}>
+          <div className="flex justify-center mt-8">
+            {isFetching ? (
+              <WahretZmenLoader />
+            ) : (
+              <button className="wahret-zmen-btn" onClick={handleLoadMore}>
+                Load More
+              </button>
+            )}
+          </div>
+        </FadeInSection>
       </div>
-
-      {/* Products Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredProducts.length > 0 ? (
-          filteredProducts.map((product, index) => (
-            <ProductCard key={index} product={product} />
-          ))
-        ) : (
-          <p className="col-span-full text-center text-gray-500">No products found.</p>
-        )}
-      </div>
-
-      {/* Load More Button and Loader */}
-      <div className="flex justify-center mt-8">
-  {isFetching ? (
-    <WahretZmenLoader />
-  ) : (
-    <button className="wahret-zmen-btn" onClick={handleLoadMore}>
-      Load More
-    </button>
-  )}
-</div>
-
-    </div>
+    </FadeInSection>
   );
 };
 

@@ -128,7 +128,7 @@ const sendOrderNotification = async (req, res) => {
 
         <p>Thank you for your patience and for choosing Wahret Zmen Boutique! 💛</p>
         
-        <p>Best regards,</p>
+        <p>Best regards,</p> 
         <p><strong>Wahret Zmen Boutique Team</strong></p>
       `;
     } else {
@@ -167,6 +167,14 @@ const sendOrderNotification = async (req, res) => {
     res.status(500).json({ message: "Error sending notification", error: error.message });
   }
 };
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
+  }
+});
 
 // ✅ Export all controllers
 module.exports = {

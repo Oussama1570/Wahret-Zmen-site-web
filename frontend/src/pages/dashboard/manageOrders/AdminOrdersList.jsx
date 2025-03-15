@@ -169,7 +169,7 @@ const startEditingOrder = (order) => {
       </td>
       <td className="px-6 py-3 border border-gray-300 text-center">
   <input
-    type="number"
+    type="number" 
     value={editingOrder === order._id ? updatedValues.completionPercentage ?? order.completionPercentage : order.completionPercentage}
     onChange={(e) => handleChange("completionPercentage", parseInt(e.target.value))}
     disabled={editingOrder !== order._id}

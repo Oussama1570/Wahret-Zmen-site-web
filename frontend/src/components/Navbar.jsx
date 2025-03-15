@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FiShoppingBag, FiUser, FiHeart, FiMenu, FiX } from "react-icons/fi";
+import { FiShoppingBag, FiUser, FiMenu, FiX } from "react-icons/fi";
 import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useAuth } from "../context/AuthContext";
@@ -53,15 +53,8 @@ const Navbar = () => {
                     <li><Link to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link></li>
                 </ul>
 
-               
-
                 {/* Right Side Icons */}
                 <div className="nav-icons">
-                    {/* Wishlist */}
-                    <Link to="/wishlist">
-                        <FiHeart className="icon" />
-                    </Link>
-
                     {/* Cart */}
                     <Link to="/cart" className="cart-icon">
                         <FiShoppingBag className="icon" />

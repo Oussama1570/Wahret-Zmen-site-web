@@ -17,25 +17,21 @@ const productsApi = createApi({
     baseQuery,
     tagTypes: ["Products"],
     endpoints: (builder) => ({
-        // ✅ Fetch All Products
         getAllProducts: builder.query({
             query: () => "/",
             providesTags: ["Products"],
         }),
 
-        // ✅ Fetch a Single Product by ID
         getProductById: builder.query({
             query: (id) => `/${id}`,
             providesTags: (result, error, id) => [{ type: "Products", id }],
         }),
 
-        // ✅ Search Products by Name or Category
         searchProducts: builder.query({
             query: (searchTerm) => `/search?query=${searchTerm}`,
             providesTags: ["Products"],
         }),
 
-        // ✅ Add a New Product (Including Stock Quantity)
         addProduct: builder.mutation({
             query: (newProduct) => ({
                 url: "/create-product",
@@ -46,10 +42,9 @@ const productsApi = createApi({
             invalidatesTags: ["Products"],
         }),
 
-        // ✅ Update Product (Including Stock)
         updateProduct: builder.mutation({
             query: ({ id, ...rest }) => ({
-                url: `/edit/${id}`,
+                url: `/${id}`,
                 method: "PUT",
                 body: rest,
                 headers: { "Content-Type": "application/json" },
@@ -57,10 +52,9 @@ const productsApi = createApi({
             invalidatesTags: (result, error, { id }) => [{ type: "Products", id }],
         }),
 
-        // ✅ Delete a Product
         deleteProduct: builder.mutation({
             query: (id) => ({
-                url: `/delete/${id}`,
+                url: `/${id}`, // ✅ Corrected delete route
                 method: "DELETE",
             }),
             invalidatesTags: ["Products"],
@@ -69,7 +63,7 @@ const productsApi = createApi({
 });
 
 export const {
-    useGetAllProductsQuery,   // ✅ Corrected Export Name
+    useGetAllProductsQuery,
     useGetProductByIdQuery,
     useSearchProductsQuery,
     useAddProductMutation,

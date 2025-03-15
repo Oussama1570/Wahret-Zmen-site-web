@@ -9,6 +9,7 @@ import news1 from "../../assets/news/news n°1 Wahret Zmen.webp";
 import news2 from "../../assets/news/news n°2 Wahret Zmen.webp";
 import news3 from "../../assets/news/news n°3 Wahret Zmen.webp";
 import { Link } from 'react-router-dom';
+import FadeInSection from '../../Animations/FadeInSection.jsx'; // Import fade-in animation component
 
 const news = [
     {
@@ -20,13 +21,13 @@ const news = [
     {
         "id": 2,
         "title": "Discover the Essence of Tunisian Tradition",
-        "description": "A major breakthrough in artificial intelligence has been announced by researchers, with new advancements promising to revolutionize industries from healthcare to finance.",
+        "description": "For lovers of authentic Tunisian fashion, Wahret Zmen by Sabri is a destination where tradition meets artistry!",
         "image": news2
     },
     {
         "id": 3,
         "title": "New Space Mission Aims to Explore Distant Galaxies",
-        "description": "For lovers of authentic Tunisian fashion, Wahret Zmen by Sabri is a destination where tradition meets artistry! NASA has unveiled plans for a new space mission that will aim to explore distant galaxies, with hopes of uncovering insights into the origins of the universe.",
+        "description": "For lovers of authentic Tunisian fashion, Wahret Zmen by Sabri is a destination where tradition meets artistry!",
         "image": news3
     }
 ];
@@ -60,34 +61,36 @@ const News = () => {
     };
 
     return (
-        <div className="py-8 mb-0">
-            <h2 className="text-2xl font-semibold mb-6 text-center">Latest News</h2>
+        <FadeInSection>
+            <div className="py-8 mb-0">
+                <h2 className="text-2xl font-semibold mb-6 text-center">Latest News</h2>
 
-            <div className="px-4">
-                <Slider {...settings}>
-                    {news.map((item, index) => (
-                        <div key={index} className="p-3">
-                            <div className="flex flex-col sm:flex-row items-center gap-3 p-4 border border-gray-200 rounded-lg shadow-sm bg-white">
-                                
-                                {/* Small Image */}
-                                <div className="flex-shrink-0">
-                                    <img src={item.image} alt="" className="w-[80px] sm:w-[100px] h-auto object-cover rounded-md" />
-                                </div>
+                <div className="px-4">
+                    <Slider {...settings}>
+                        {news.map((item, index) => (
+                            <div key={index} className="p-3">
+                                <div className="flex flex-col sm:flex-row items-center gap-3 p-4 border border-gray-200 rounded-lg shadow-sm bg-white">
+                                    
+                                    {/* Small Image */}
+                                    <div className="flex-shrink-0">
+                                        <img src={item.image} alt="" className="w-[80px] sm:w-[100px] h-auto object-cover rounded-md" />
+                                    </div>
 
-                                {/* News Content */}
-                                <div className="flex-1">
-                                    <Link to="/" className="block hover:text-blue-500">
-                                        <h3 className="text-sm font-medium mb-1">{item.title}</h3>
-                                    </Link>
-                                    <div className="w-8 h-[2px] bg-primary mb-2"></div>
-                                    <p className="text-xs text-gray-600">{item.description}</p>
+                                    {/* News Content */}
+                                    <div className="flex-1">
+                                        <Link to="/" className="block hover:text-blue-500">
+                                            <h3 className="text-sm font-medium mb-1">{item.title}</h3>
+                                        </Link>
+                                        <div className="w-8 h-[2px] bg-primary mb-2"></div>
+                                        <p className="text-xs text-gray-600">{item.description}</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
-                </Slider>
+                        ))}
+                    </Slider>
+                </div>
             </div>
-        </div>
+        </FadeInSection>
     );
 };
 

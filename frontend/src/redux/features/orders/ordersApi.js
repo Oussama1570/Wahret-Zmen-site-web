@@ -6,6 +6,13 @@ const ordersApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${getBaseUrl().replace(/\/$/, "")}/api/orders`,
     credentials: "include",
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
   }),
   tagTypes: ["Orders"],
 
@@ -42,12 +49,12 @@ const ordersApi = createApi({
       providesTags: ["Orders"],
     }),
 
-    // ✅ Update an order (e.g., change status, assign tailor)
+    // ✅ Update an order (e.g., change status, assign tailor, update tracking details)
     updateOrder: builder.mutation({
-      query: ({ orderId, isPaid, isDelivered, completionPercentage, tailorAssignments }) => ({
+      query: ({ orderId, isPaid, isDelivered, completionPercentage, tailorAssignments, trackingNumber, trackingUrl }) => ({
         url: `/${orderId}`,
         method: "PATCH",
-        body: { isPaid, isDelivered, completionPercentage, tailorAssignments },
+        body: { isPaid, isDelivered, completionPercentage, tailorAssignments, trackingNumber, trackingUrl },
       }),
       invalidatesTags: ["Orders"],
     }),

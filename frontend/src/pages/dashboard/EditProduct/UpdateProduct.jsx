@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import {
-  useGetProductByIdQuery, // ✅ Fixed Hook
+  useGetProductByIdQuery,
   useUpdateProductMutation,
 } from "../../../redux/features/products/productsApi";
 import Loading from "../../../components/Loading";
@@ -12,7 +12,7 @@ import getBaseUrl from "../../../utils/baseURL";
 
 const UpdateProduct = () => {
   const { id } = useParams();
-  const { data: productData, isLoading, isError, refetch } = useGetProductByIdQuery(id); // ✅ Fixed Hook
+  const { data: productData, isLoading, isError, refetch } = useGetProductByIdQuery(id);
   const { register, handleSubmit, setValue } = useForm();
   const [updateProduct, { isLoading: updating }] = useUpdateProductMutation();
 
@@ -28,9 +28,9 @@ const UpdateProduct = () => {
       setValue("oldPrice", productData.oldPrice);
       setValue("newPrice", productData.newPrice);
       setValue("stockQuantity", productData.stockQuantity);
-      
+
       setPreviewURL(
-        productData.coverImage.startsWith('http') 
+        productData.coverImage.startsWith("http")
           ? productData.coverImage
           : `${getBaseUrl()}${productData.coverImage}`
       );
@@ -65,6 +65,7 @@ const UpdateProduct = () => {
     }
 
     const updatedProductData = { ...productData, ...data, coverImage };
+    updatedProductData.stockQuantity = Number(data.stockQuantity); // Ensure stock quantity is a number
 
     try {
       await updateProduct({ id, ...updatedProductData }).unwrap();
@@ -106,7 +107,7 @@ const UpdateProduct = () => {
           <input {...register("newPrice")} type="number" className="w-full p-2 border rounded" placeholder="New Price" required />
         </div>
 
-        <input {...register("stockQuantity")} type="number" className="w-full p-2 border rounded" placeholder="Stock Quantity" min="1" required />
+        <input {...register("stockQuantity")} type="number" className="w-full p-2 border rounded" placeholder="Stock Quantity" min="0" required />
 
         <label className="flex items-center">
           <input type="checkbox" {...register("trending")} className="mr-2" />
