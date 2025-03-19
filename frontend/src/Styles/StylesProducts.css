@@ -1,0 +1,113 @@
+.container-Products {margin-top: 8%;}
+
+/* Wahret Zmen Loader */
+@keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .w-16 {
+    width: 4rem;
+  }
+  
+  .h-16 {
+    height: 4rem;
+  }
+  
+  .border-4 {
+    border-width: 4px;
+  }
+  
+  .border-t-4 {
+    border-top-width: 4px;
+  }
+  
+  .border-blue-500 {
+    border-color: #3b82f6;
+  }
+  
+  .border-solid {
+    border-style: solid;
+  }
+  
+  .rounded-full {
+    border-radius: 9999px;
+  }
+  
+  .animate-spin {
+    animation: spin 1s linear infinite;
+  }
+  
+
+  /* Wahret Zmen Boutique Button */
+.wahret-zmen-btn {
+    background-color: #A67C52; /* Warm Gold-like Color */
+    color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  }
+  
+  /* Hover Effect */
+  .wahret-zmen-btn:hover {
+    background-color: #8A5D3B; /* Slightly darker shade for hover effect */
+    transform: translateY(-2px); /* Slight lift effect */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+  }
+  
+  /* Focus Effect */
+  .wahret-zmen-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(166, 124, 82, 0.5); /* Subtle focus ring */
+  }
+  
+  /* Active Effect */
+  .wahret-zmen-btn:active {
+    transform: translateY(0); /* Return to normal state when clicked */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Return to original shadow */
+  }
+  
+
+
+  .category-title {
+    font-size: 1.6rem; /* Slightly larger for emphasis */
+    font-weight: 700;
+    font-family: 'Merriweather', serif; /* Elegant, premium font */
+    text-align: center;
+    color: #8A5D3B; /* Warm, rich brown */
+    text-transform: uppercase; /* Adds sophistication */
+    letter-spacing: 1.2px;
+    margin-bottom: 0.5rem; /* Space before selector */
+    position: relative;
+    display: inline-block;
+  }
+  
+  .category-title::before,
+  .category-title::after {
+    content: "";
+    width: 40px; /* Decorative lines */
+    height: 3px;
+    background: linear-gradient(to right, #D4AF37, #A67C52); /* Gold gradient */
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+  }
+  
+  .category-title::before {
+    left: -50px;
+  }
+  
+  .category-title::after {
+    right: -50px;
+  }
+  
