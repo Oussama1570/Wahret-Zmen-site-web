@@ -11,11 +11,11 @@ const AdminOrdersProgress = () => {
   const [updateOrder] = useUpdateOrderMutation();
   const [sendNotification] = useSendOrderNotificationMutation();
   const [progressChanges, setProgressChanges] = useState({});
-  const [editingProductKey, setEditingProductKey] = useState(null); // ✅ Track the specific product being edited
+  const [editingProductKey, setEditingProductKey] = useState(null);
 
   const progressSteps = [20, 40, 60, 80, 100];
 
-  // ✅ Load saved progress from backend on mount
+  // ✅ Load saved progress on mount
   useEffect(() => {
     if (orders) {
       const initial = {};
@@ -32,56 +32,66 @@ const AdminOrdersProgress = () => {
   }, [orders]);
 
   const handleCheckboxChange = (key, value) => {
-    if (editingProductKey === key) { // ✅ Only allow editing the selected product
-      setProgressChanges((prev) => ({ ...prev, [key]: value }));
+    if (editingProductKey === key) {
+      setProgressChanges(prev => ({ ...prev, [key]: value }));
     }
   };
 
   const handleSave = async (orderId, productKey) => {
-    // Step 1: Collect the updated value
-    const updatedValue = progressChanges[`${orderId}|${productKey}`];
+    const fullKey = `${orderId}|${productKey}`;
+    const updatedValue = progressChanges[fullKey];
   
-    // Step 2: Get the full existing productProgress for this order
     const order = orders.find((o) => o._id === orderId);
-    const existingProgress = order?.productProgress || {};
+    if (!order) {
+      Swal.fire("Error", "Order not found!", "error");
+      return;
+    }
   
-    // Step 3: Create a merged progress object (keep all previous values and update just one)
+    const email = order.email;
+    const existingProgress = order.productProgress || {};
+  
     const updatedProgress = {
       ...existingProgress,
       [productKey]: updatedValue,
     };
   
     try {
+      // ✅ Save progress
       await updateOrder({ orderId, productProgress: updatedProgress }).unwrap();
+      Swal.fire("Saved!", "Progress has been saved.", "success");
   
-      Swal.fire('Saved!', 'Progress has been saved.', 'success');
-      setEditingProductKey(null); // Disable edit mode
-      refetch(); // Refresh orders
+      // ✅ Automatically send notification at 60% or 100%
+      if (
+        updatedValue !== undefined &&
+        (updatedValue === 60 || updatedValue === 100) &&
+        productKey &&
+        email
+      ) {
+        await sendNotification({
+          orderId,
+          email,
+          productKey,
+          progress: updatedValue, // ✅ now correct key name
+        }).unwrap();
+  
+        Swal.fire("Notification Sent", `${updatedValue}% email sent to ${order.name}`, "success");
+      }
+  
+      setEditingProductKey(null);
+      refetch();
     } catch (error) {
-      console.error("Save Error:", error);
-      Swal.fire('Error', 'Failed to save progress.', 'error');
+      console.error("Save/Notify Error:", error);
+      const msg = error?.data?.message || "Failed to save or notify.";
+      Swal.fire("Error", msg, "error");
     }
   };
+  
+  
+  
   
 
   const handleEdit = (productKey) => {
-    setEditingProductKey(productKey); // ✅ Enable editing only for this product
-  };
-
-  const handleNotify = async (order, productKey, progress) => {
-    if (progress === 60 || progress === 100) {
-      try {
-        await sendNotification({
-          orderId: order._id,
-          email: order.email,
-          productKey,
-          progress,
-        }).unwrap();
-        Swal.fire('Notification Sent', `${progress}% email sent to ${order.name}`, 'success');
-      } catch (error) {
-        Swal.fire('Error', 'Failed to send notification.', 'error');
-      }
-    }
+    setEditingProductKey(productKey);
   };
 
   if (isLoading) return <p>Loading orders...</p>;
@@ -91,7 +101,9 @@ const AdminOrdersProgress = () => {
       <h2 className="text-xl font-bold mb-4">Manage Orders Progress</h2>
       {orders.map(order => (
         <div key={order._id} className="border p-4 rounded mb-6">
-          <h3 className="text-lg font-semibold mb-2">Order #{order._id.slice(0, 8)} - {order.name}</h3>
+          <h3 className="text-lg font-semibold mb-2">
+            Order #{order._id.slice(0, 8)} - {order.name}
+          </h3>
           {order.products.map((prod) => {
             const key = `${order._id}|${prod.productId._id}|${prod.color.colorName}`;
             const productKey = `${prod.productId._id}|${prod.color.colorName}`;
@@ -107,9 +119,9 @@ const AdminOrdersProgress = () => {
                         type="radio"
                         name={key}
                         value={val}
-                        checked={progressChanges[key] === val}  // ✅ Ensure saved value is checked
+                        checked={progressChanges[key] === val}
                         onChange={() => handleCheckboxChange(key, val)}
-                        disabled={editingProductKey !== key} // ✅ Only the selected product can be edited
+                        disabled={editingProductKey !== key}
                       />
                       <span className="ml-1">{val}%</span>
                     </label>
@@ -130,13 +142,6 @@ const AdminOrdersProgress = () => {
                       Edit
                     </button>
                   )}
-
-                  <button
-                    onClick={() => handleNotify(order, productKey, currentValue)}
-                    className="bg-green-500 text-white px-3 py-1 rounded text-sm"
-                  >
-                    Notify
-                  </button>
                 </div>
               </div>
             );

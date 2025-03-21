@@ -131,9 +131,13 @@ const sendOrderNotification = async (req, res) => {
   try {
     const { orderId, email, productKey, progress } = req.body;
 
+    // ✅ Add this line just below the destructuring:
+    console.log("📩 Incoming Notification Request:", req.body);
+
     if (!email || !productKey || progress === undefined) {
       return res.status(400).json({ message: "Missing email, productKey, or progress value" });
     }
+
 
     const order = await Order.findById(orderId).populate("products.productId", "title colors coverImage");
     if (!order) {

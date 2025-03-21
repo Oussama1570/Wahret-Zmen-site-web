@@ -119,13 +119,15 @@ updateOrder: builder.mutation({
     }),
 
     // ✅ Send email notification about order status
-    sendOrderNotification: builder.mutation({
-      query: ({ orderId, email, completionPercentage }) => ({
-        url: `/notify`,
-        method: "POST",
-        body: { orderId, email, completionPercentage },
-      }),
-    }),
+    // ✅ Corrected mutation for sending notifications
+sendOrderNotification: builder.mutation({
+  query: ({ orderId, email, productKey, progress }) => ({
+    url: `/notify`,
+    method: "POST",
+    body: { orderId, email, productKey, progress }, // ✅ Make sure productKey is sent
+  }),
+}),
+
   }),
 });
 
