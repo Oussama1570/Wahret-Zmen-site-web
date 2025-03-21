@@ -101,7 +101,8 @@ const AdminOrdersProgress = () => {
       <h2 className="text-xl font-bold mb-4">Manage Orders Progress</h2>
       {orders.map(order => (
         <div key={order._id} className="border p-4 rounded mb-6">
-          <h3 className="text-lg font-semibold mb-2">
+         <h3 className="text-lg font-semibold mb-2 text-center">
+
             Order #{order._id.slice(0, 8)} - {order.name}
           </h3>
           {order.products.map((prod) => {
@@ -110,9 +111,10 @@ const AdminOrdersProgress = () => {
             const currentValue = progressChanges[key] ?? 0;
 
             return (
-              <div key={key} className="mb-4 border-t pt-4">
+                <div key={key} className="mb-4 border-t pt-4 text-center">
                 <p><strong>{prod.productId.title}</strong> — Color: {prod.color.colorName}</p>
-                <div className="flex flex-wrap gap-4 items-center mt-2">
+                <div className="flex flex-wrap gap-4 items-center mt-2 justify-center">
+
                   {progressSteps.map((val) => (
                     <label key={val} className="mr-2">
                       <input
