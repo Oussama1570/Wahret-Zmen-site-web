@@ -3,10 +3,9 @@ const Product = require("../products/product.model.js");
 const nodemailer = require("nodemailer");
 require("dotenv").config(); // Load environment variables
 
-// ✅ Create a New Order (Ensuring Colors are Correctly Stored)
+// ✅ Create a New Order
 const createAOrder = async (req, res) => {
   try {
-    // Validate each product and ensure colors are correctly set
     const products = await Promise.all(
       req.body.products.map(async (product) => {
         const productData = await Product.findById(product.productId);
@@ -15,7 +14,6 @@ const createAOrder = async (req, res) => {
           throw new Error(`Product not found: ${product.productId}`);
         }
 
-        // Use the selected color, or default to the first color available
         const selectedColor = product.color?.colorName
           ? product.color
           : productData.colors[0] || { colorName: "Default", image: productData.coverImage };
@@ -41,7 +39,7 @@ const createAOrder = async (req, res) => {
   }
 };
 
-// ✅ Get Orders by Customer Email (Ensuring Colors Are Displayed)
+// ✅ Get Orders by Customer Email
 const getOrderByEmail = async (req, res) => {
   try {
     const { email } = req.params;
@@ -66,7 +64,6 @@ const getAllOrders = async (req, res) => {
       .populate("products.productId", "title colors coverImage")
       .lean();
 
-    // Ensure each product has a valid coverImage
     const processedOrders = orders.map(order => ({
       ...order,
       products: order.products.map(product => ({
@@ -82,11 +79,11 @@ const getAllOrders = async (req, res) => {
   }
 };
 
-
+// ✅ Update an Order
 // ✅ Update an Order
 const updateOrder = async (req, res) => {
   const { id } = req.params;
-  const { isPaid, isDelivered, completionPercentage, tailorAssignments } = req.body;
+  const { isPaid, isDelivered, productProgress, tailorAssignments } = req.body;
 
   try {
     const updatedOrder = await Order.findByIdAndUpdate(
@@ -94,8 +91,8 @@ const updateOrder = async (req, res) => {
       {
         isPaid,
         isDelivered,
-        completionPercentage,
-        tailorAssignments, // ✅ Save tailor assignments per color
+        productProgress, // ✅ Now saves product progress correctly
+        tailorAssignments,
       },
       { new: true }
     );
@@ -110,7 +107,6 @@ const updateOrder = async (req, res) => {
     res.status(500).json({ message: "Failed to update order", error: error.message });
   }
 };
-
 
 
 // ✅ Delete an Order
@@ -130,23 +126,31 @@ const deleteOrder = async (req, res) => {
   }
 };
 
-// ✅ Send Order Notification via Email
+// ✅ Send Order Notification via Email (per productKey and progress)
 const sendOrderNotification = async (req, res) => {
-  const { orderId, email, completionPercentage } = req.body;
-
-  if (!email || completionPercentage === undefined) {
-    return res.status(400).json({ message: "Missing email or completion percentage" });
-  }
-
   try {
-    // Retrieve order to get the customer's name
-    const order = await Order.findById(orderId).populate("products.productId", "title colors coverImage");
+    const { orderId, email, productKey, progress } = req.body;
 
+    if (!email || !productKey || progress === undefined) {
+      return res.status(400).json({ message: "Missing email, productKey, or progress value" });
+    }
+
+    const order = await Order.findById(orderId).populate("products.productId", "title colors coverImage");
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
 
     const customerName = order.name;
+    const [productId, colorName] = productKey.split("|");
+
+    // Find the correct product in the order
+    const matchedProduct = order.products.find(
+      (p) => p.productId?._id?.toString() === productId && p.color?.colorName === colorName
+    );
+
+    if (!matchedProduct) {
+      return res.status(404).json({ message: "Product not found in order" });
+    }
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -156,60 +160,25 @@ const sendOrderNotification = async (req, res) => {
       },
     });
 
-    // ✅ Email Message based on Order Completion
     let subject, htmlMessage;
 
-    if (completionPercentage < 100) {
-      subject = `Wahret Zmen Boutique - Order Progress Update (#${orderId})`;
+    if (progress < 100) {
+      subject = `Wahret Zmen - Product Update (${progress}%)`;
       htmlMessage = `
-        <p><strong>Dear ${customerName},</strong></p> 
-        <p>We are excited to update you on your order <strong>#${orderId}</strong> at <strong>Wahret Zmen Boutique</strong>.</p>
-        
-        <p>Your order is currently <strong>${completionPercentage}% completed</strong>. We are carefully preparing your items and will notify you once everything is ready.</p>
-        
-        <p><strong>Products in your order:</strong></p>
-        <ul>
-          ${order.products.map(prod => `
-            <li>
-              ${prod.productId?.title || "Product"} 
-              (Quantity: ${prod.quantity}, 
-              Color: ${prod.color?.colorName || "Default"}) 
-              <img src="${prod.color?.image || prod.productId?.coverImage}" width="50"/>
-            </li>
-          `).join('')}
-        </ul>
-
-        <p>Thank you for your patience and for choosing Wahret Zmen Boutique! 💛</p>
-        
-        <p>Best regards,</p> 
-        <p><strong>Wahret Zmen Boutique Team</strong></p>
+        <p>Dear ${customerName},</p>
+        <p>Your ordered product <strong>${matchedProduct.productId.title}</strong> (Color: ${matchedProduct.color.colorName}) is now <strong>${progress}% completed</strong>.</p>
+        <img src="${matchedProduct.color.image}" width="60" />
+        <p>We'll notify you again once it's fully ready!</p>
+        <p>Best regards,<br/>Wahret Zmen Boutique</p>
       `;
     } else {
-      subject = `Wahret Zmen Boutique - Your Order is Ready! (#${orderId})`;
+      subject = `Wahret Zmen - Product Ready for Pickup!`;
       htmlMessage = `
-        <p><strong>Dear ${customerName},</strong></p> 
-        <p>Great news! Your order <strong>#${orderId}</strong> at <strong>Wahret Zmen Boutique</strong> is now <strong>fully completed</strong> and ready for pickup or delivery. 🎉</p>
-
-        <p><strong>Your Order Details:</strong></p>
-        <ul>
-          ${order.products.map(prod => `
-            <li>
-              ${prod.productId?.title || "Product"} 
-              (Quantity: ${prod.quantity}, 
-              Color: ${prod.color?.colorName || "Default"}) 
-              <img src="${prod.color?.image || prod.productId?.coverImage}" width="50"/>
-            </li>
-          `).join('')}
-        </ul>
-
-        <p>We appreciate your trust in Wahret Zmen Boutique. We hope you enjoy your items!</p>
-        
-        <p>For any inquiries or assistance, feel free to contact us.</p>
-
-        <p>See you soon! 💛</p>
-        
-        <p>Best regards,</p>
-        <p><strong>Wahret Zmen Boutique Team</strong></p>
+        <p>Dear ${customerName},</p>
+        <p>Your product <strong>${matchedProduct.productId.title}</strong> (Color: ${matchedProduct.color.colorName}) is now <strong>fully completed</strong> and ready for pickup or delivery. 🎉</p>
+        <img src="${matchedProduct.color.image}" width="60" />
+        <p>Thank you for your trust in Wahret Zmen Boutique!</p>
+        <p>Warm regards,<br/>Wahret Zmen Team</p>
       `;
     }
 

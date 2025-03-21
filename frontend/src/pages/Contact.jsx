@@ -3,6 +3,7 @@ import ContactForm from '../components/Contact-form.jsx';
 import "../Styles/StylesContact.css";
 import "../Styles/StylesContact-form.css";
 import FadeInSection from '../Animations/FadeInSection.jsx';
+import { Helmet } from "react-helmet"; // Importing Helmet
 
 const Contact = () => {
   const [successMessage, setSuccessMessage] = useState(null);
@@ -10,6 +11,11 @@ const Contact = () => {
   return (
     <FadeInSection>
     <div className="contact-container">
+       {/* Set the title for the Home Page */}
+            <Helmet>
+              <title>Contact Us</title>
+              
+            </Helmet>
       <h2>Contact Us</h2>
       <p>Feel free to reach out to us for any inquiries.</p>
       <div className="contact-info">

@@ -25,9 +25,15 @@ const OrderSchema = new mongoose.Schema(
     totalPrice: { type: Number, required: true },
     isPaid: { type: Boolean, default: false },
     isDelivered: { type: Boolean, default: false },
-    completionPercentage: { type: Number, default: 0 },
 
-    // ✅ Add tailor assignments (Each productId maps to a tailor name)
+    // ✅ Persistent product progress tracking
+    productProgress: {
+      type: Map,
+      of: Number, // Example: { "productId123|Blue": 20, "productId456|Red": 40 }
+      default: {},
+    },
+
+    // ✅ Tailor assignment per product
     tailorAssignments: {
       type: Map,
       of: String, // Stores `{ productId|colorName -> tailorName }`

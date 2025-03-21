@@ -91,19 +91,21 @@ const ordersApi = createApi({
     }),
 
     // ✅ Update an order (Ensuring Color is Not Lost)
-    updateOrder: builder.mutation({
-      query: ({ orderId, isPaid, isDelivered, completionPercentage, tailorAssignments }) => ({
-        url: `/${orderId}`,
-        method: "PATCH",
-        body: {
-          isPaid,
-          isDelivered,
-          completionPercentage,
-          tailorAssignments, // ✅ Send tailor assignments per color
-        },
-      }),
-      invalidatesTags: ["Orders"],
-    }),
+    // ✅ Update an order (Ensuring Color is Not Lost)
+updateOrder: builder.mutation({
+  query: ({ orderId, productProgress, isPaid, isDelivered, tailorAssignments }) => ({
+    url: `/${orderId}`,
+    method: "PATCH",
+    body: {
+      isPaid,
+      isDelivered,
+      productProgress,  // ✅ Save progress correctly in database
+      tailorAssignments,
+    },
+  }),
+  invalidatesTags: ["Orders"], // ✅ Ensure UI refreshes with new data
+}),
+
     
     
 
