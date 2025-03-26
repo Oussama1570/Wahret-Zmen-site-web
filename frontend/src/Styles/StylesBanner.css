@@ -1,0 +1,136 @@
+/* Banner Container with Smooth Fade-in Effect */
+.banner-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 50px 20px;
+    background: #FAF3E0; /* Soft warm beige */
+    animation: fadeIn 1.2s ease-in-out;
+    position: relative;
+    overflow: hidden;
+    }
+
+/* Parallax Background Effect */
+.banner-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../../assets/banner-pattern.png'); /* Add a decorative pattern */
+    opacity: 0.1;
+    z-index: -1;
+    transform: scale(1.1);
+}
+
+
+/* Responsive Layout */
+@media (min-width: 768px) {
+    .banner-container {
+        flex-direction: row-reverse;
+        justify-content: center;
+        padding: 60px;
+    }
+}
+
+/* Banner Image with Subtle Zoom-in Effect */
+.banner-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    animation: zoomIn 1.5s ease-in-out;
+}
+
+/* Zoom-in Animation */
+@keyframes zoomIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0.8;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Banner Text */
+.banner-text {
+    max-width: 480px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center text and button */
+}
+
+/* Main Heading */
+.banner-text h1 {
+    font-size: 2rem;
+    color: #8B5E3B; /* Warm earthy brown */
+    margin-bottom: 10px;
+    font-family: Arial, sans-serif; /* Changed to Arial */
+}
+
+/* Subtext */
+.banner-text p {
+    font-size: 1rem;
+    color: #5E493A;
+    line-height: 1.5;
+    font-family: Arial, sans-serif; /* Changed to Arial */
+    margin-bottom: 15px;
+}
+
+
+/* Call-to-Action Button with Elegant Hover Effects */
+.banner-btn {
+    background: #C69C6D; /* Soft golden tone */
+    color: white;
+    padding: 12px 24px;
+    font-size: 1rem;
+    border-radius: 6px;
+    font-family: 'Cairo', sans-serif;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    border: 2px solid transparent;
+    display: inline-block;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Button Hover Effect - Lift & Glow */
+.banner-btn:hover {
+    background: #8B5E3B; /* Darker earthy tone */
+    transform: translateY(-4px); /* Slight lift */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    border-color: #fff5e0;
+}
+
+/* Button Click Effect */
+.banner-btn:active {
+    transform: translateY(2px);
+    box-shadow: none;
+}
+
+/* Glowing Outline Effect */
+.banner-btn::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    background: linear-gradient(45deg, rgba(255, 223, 186, 0.5), rgba(194, 134, 74, 0.5));
+    border-radius: 8px;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Activate Glow on Hover */
+.banner-btn:hover::before {
+    opacity: 1;
+}
+
