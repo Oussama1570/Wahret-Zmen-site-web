@@ -7,28 +7,17 @@ import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCmzfUAzVeiEd5Z0BPMOTUG-8wBmGrELzQ",
-  authDomain: "product-store-mern-app.firebaseapp.com",
-  projectId: "product-store-mern-app",
-  storageBucket: "product-store-mern-app.firebasestorage.app",
-  messagingSenderId: "476181559910",
-  appId: "1:476181559910:web:8e0caa602805c170394ba7",
-  measurementId: "G-X1HHKC5SVY"
+  apiKey: import.meta.env.VITE_API_KEY,
+  authDomain: import.meta.env.VITE_Auth_Domain,
+  projectId: import.meta.env.VITE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDERID,
+  appId: import.meta.envVITE_APPID
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-
-
-
-
-
-
-
-
-
-
 
 
 
