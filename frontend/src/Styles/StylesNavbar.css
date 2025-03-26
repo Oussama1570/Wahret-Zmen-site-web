@@ -8,10 +8,10 @@
     top: 0;
     left: 0;
     z-index: 1000;
-}
-
-/* Navbar Content */
-.navbar-content {
+  }
+  
+  /* Navbar Content */
+  .navbar-content {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
@@ -20,10 +20,61 @@
     align-items: center;
     padding: 0 2rem;
     position: relative;
-}
-
-/* Logo */
-.logo {
+  }
+  
+  /* Navbar Left (Logo & Language Switcher) */
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Reduce space between logo and language switcher */
+  }
+  
+  /* Language Switcher */
+  .language-switcher {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #6C757D;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  /* Hover Effect */
+  .language-switcher:hover {
+    color: #343A40;
+  }
+  
+  /* Ensure the dropdown does not overlap */
+  .language-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    width: auto;
+    min-width: 100px;
+    z-index: 100;
+  }
+  
+  /* Language Switcher Fix on Mobile */
+  @media (max-width: 768px) {
+    .language-switcher {
+      font-size: 1rem;
+    }
+  
+    .navbar-left {
+      flex-direction: row;
+      gap: 10px;
+    }
+  }
+  
+  
+  /* Logo */
+  .logo {
     display: flex;
     align-items: center;
     text-decoration: none;
@@ -31,62 +82,18 @@
     font-size: 1.5rem;
     font-weight: bold;
     font-family: 'Cairo', sans-serif;
-    margin-right: 150px !important;
-}
-
-.logo-img {
+  }
+  
+  .logo-img {
     width: 40px;
     height: auto;
-    margin-right: 15px;
     border-radius: 50%;
-    
-}
-/* 👈 Group the logo and language switcher */
-.navbar-left {
-  display: flex;
-  align-items: center;
-  gap: 40px; /* ✅ space between logo and switcher */
-  flex-shrink: 0;
-}
-
-/* ✅ Keep logo clean and close */
-.logo {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: #6C757D;
-  font-size: 1.5rem;
-  font-weight: bold;
-  font-family: 'Cairo', sans-serif;
-  margin: 0 !important;
-}
-
-/* RTL-friendly spacing between image and text */
-.logo-img {
-  width: 40px;
-  height: auto;
-  border-radius: 50%;
-  margin-inline-end: 12px;
-}
-
-.logo-text {
-  font-size: 1.6rem;
-}
-
-/* Optional: Center nav links (optional tweak if needed) */
-.nav-links {
-  flex-grow: 1;
-  justify-content: center;
-  display: flex;
-  list-style: none;
-  gap: 2rem;
-  padding: 0;
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
+    margin-inline-end: 12px;
+  }
+  
+  /* Centered Navigation Menu */
 /* Centered Navigation Menu */
+/* ✅ Responsive Navigation Links */
 .nav-links {
     list-style: none;
     display: flex;
@@ -96,24 +103,55 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    align-items: center;
+    transition: all 0.3s ease-in-out;
 }
 
-.nav-links li {
+/* 📱 Mobile View */
+@media (max-width: 1024px) {
+  .nav-links {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    background: white;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: none;
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+  }
+
+  /* 🔥 Show when active */
+  .nav-links.open {
+    display: flex;
+    opacity: 1;
+  }
+
+  .nav-links li {
+    margin: 10px 0;
+  }
+}
+  .nav-links li {
     display: inline-block;
-}
-
-/* Navbar Menu Links */
-.nav-links a {
+  }
+  
+  /* Navigation Menu Links */
+  .nav-links a {
     text-decoration: none;
     color: #6C757D;
     font-weight: 500;
     position: relative;
     padding: 0.5rem 0;
     transition: color 0.3s ease-in-out;
-}
-
-/* Hover Effect: Underline Animation */
-.nav-links a::after {
+    left: 50%;
+    
+  }
+  
+  /* Underline Hover Effect */
+  .nav-links a::after {
     content: "";
     position: absolute;
     left: 50%;
@@ -122,112 +160,146 @@
     height: 2px;
     background-color: #343A40;
     transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
-}
-
-/* Expand underline on hover */
-.nav-links a:hover::after {
+  }
+  
+  .nav-links a:hover::after {
     width: 100%;
     left: 0;
+  }
+  
+  .nav-links a:hover {
+    color: #343A40;
+  }
+  
+  /* ✅ Mobile Menu Button (Fix for Burger Menu) */
+.mobile-menu-btn {
+    display: none;
+    font-size: 1.8rem;
+    color: #6C757D;
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
 }
 
-/* Change text color on hover */
-.nav-links a:hover {
-    color: #343A40;
+/* 📱 Show Burger Menu on Mobile */
+@media (max-width: 1024px) {
+    .mobile-menu-btn {
+        display: block;
+    }
 }
+
+/* 🛠️ Fix RTL (Arabic) Layout */
+html[dir="rtl"] .mobile-menu-btn {
+    margin-left: auto;
+    margin-right: 0;
+}
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .mobile-menu-btn {
+      display: block;
+    }
+  
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 80px;
+      left: 0;
+      width: 100%;
+      background: white;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem 0;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+  
+    .nav-links.open {
+      display: flex;
+    }
+  
+    .nav-links li {
+      margin: 10px 0;
+    }
+  }
+  
+  /* Navbar Icons */
+  .nav-icons {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  
+  .nav-icons a {
+    font-size: 2rem;
+    color: #6C757D;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .nav-icons a:hover {
+    transform: scale(1.1);
+  }
+  
+  /* Cart Badge */
+  /* Cart Icon Container */
+.cart-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: #6C757D;
+    text-decoration: none;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  /* Ensure Badge is Positioned Correctly */
+  .cart-badge {
+    position: absolute;
+    top: -5px; /* Adjust if necessary */
+    right: -10px; /* Adjust to align properly */
+    background-color: #dc3545; /* Red color */
+    color: white;
+    font-size: 0.85rem;
+    font-weight: bold;
+    padding: 4px 7px;
+    border-radius: 50%;
+    min-width: 18px;
+    text-align: center;
+  }
+  
+  /* Hover Effect */
+  .cart-icon:hover {
+    transform: scale(1.1);
+  }
+  
+  
+
 
 /* Mobile Menu Button */
 .mobile-menu-btn {
     display: none;
-    background: none;
-    border: none;
-    cursor: pointer;
     font-size: 1.8rem;
     color: #6C757D;
-}
-
-/* Responsive Design */
-@media (max-width: 1024px) {
-    .nav-links {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-}
-
-@media (max-width: 768px) {
-    .mobile-menu-btn {
-        display: block;
-    }
-
-    .nav-links {
-        display: none;
-        position: absolute;
-        top: 80px;
-        left: 0;
-        width: 100%;
-        background: white;
-        flex-direction: column;
-        align-items: center;
-        padding: 1rem 0;
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .nav-links.open {
-        display: flex;
-    }
-
-    .nav-links li {
-        margin: 10px 0;
-    }
-}
-
-/* Navbar Icons */
-.nav-icons {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.nav-icons a {
-    position: relative;
-    color: #6C757D;
-    font-size: 2rem;
-    text-decoration: none;
+    border: none;
+    background: none;
+    cursor: pointer;
     transition: transform 0.2s ease-in-out;
-}
-
-.nav-icons a:hover {
-    transform: scale(1.1);
-}
-
-/* Cart Badge */
-.cart-badge {
-    position: absolute;
-    top: -8px;
-    right: -12px;
-    background-color: #6C757D;
-    color: white;
-    font-size: 0.85rem;
-    font-weight: bold;
-    padding: 3px 7px;
-    border-radius: 50%;
-}
-
-
-
-/* Search Icon */
-.search-container .search-icon {
-    position: absolute;
-    left: 10px;
-    color: #6C757D;
-    font-size: 1.2rem;
-}
-
-@media (min-width: 640px) {
-    .search-container {
-        display: block;
+  }
+  
+  /* Remove hover background */
+  .mobile-menu-btn:hover {
+    background: none;
+    transform: scale(1.1); /* Optional: Slight scaling effect */
+  }
+  
+  /* Responsive - Show burger menu on mobile */
+  @media (max-width: 768px) {
+    .mobile-menu-btn {
+      display: block;
     }
-}
+  }
+  
 
 
 /* User Icon */
@@ -390,5 +462,51 @@
   }
     
 
+/* RTL Support */
+html[dir="rtl"] .navbar-content {
+  flex-direction: row-reverse; /* Flip the navbar layout */
+}
+
+html[dir="rtl"] .nav-links {
+  left: auto;
+  right: 50%;
+  transform: translate(50%, -50%);
+}
+
+html[dir="rtl"] .nav-links a {
+  left: 0; /* Reset left shift for proper alignment */
+}
+
+html[dir="rtl"] .cart-badge {
+  right: auto;
+  left: -10px; /* Move cart badge to the left */
+}
+
+/* Language Switcher Fix */
+html[dir="rtl"] .language-switcher {
+  order: -1; /* Move language switcher to the left */
+}
+
+/* Align User Menu Correctly */
+html[dir="rtl"] .user-menu {
+  direction: rtl;
+}
+
+html[dir="rtl"] .user-dropdown {
+  right: auto;
+  left: -20px; /* Move dropdown to the left */
+}
+
+/* Ensure navbar icons (cart, user) stay aligned */
+html[dir="rtl"] .nav-icons {
+  flex-direction: row-reverse;
+}
+
+/* Make sure hamburger menu aligns properly in RTL */
+html[dir="rtl"] .mobile-menu-btn {
+  margin-left: auto;
+  margin-right: 0;
+}
+  
 
   

@@ -107,8 +107,8 @@ const Products = () => {
           </div>
         </FadeInSection>
 
-       {/* 🆕 Load More Button Added Here */}
-       {filteredProducts.length < products.length && (
+        {/* 🆕 Load More Button Added Here */}
+        {filteredProducts.length < products.length && (
           <FadeInSection delay={0.5}>
             <div className="text-center mt-8">
               <button className="wahret-zmen-btn" onClick={handleLoadMore}>

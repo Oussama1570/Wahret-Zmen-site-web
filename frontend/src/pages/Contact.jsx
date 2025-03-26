@@ -17,8 +17,8 @@ const Contact = () => {
           <title>{t("contact.page_title")}</title>
         </Helmet>
 
-        <h2>{t("contact.heading")}</h2>
-        <p>{t("contact.subtitle")}</p>
+        <h2 className="contact-title">{t("contact.heading")}</h2>
+        <p className="contact-subtitle">{t("contact.subtitle")}</p>
 
         <div className="contact-info">
           <p><strong>{t("contact.address_label")}:</strong> {t("contact.address_value")}</p>

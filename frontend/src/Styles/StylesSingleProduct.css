@@ -1,1 +1,128 @@
 .product-cart { margin-top: 8%;}
+
+/* General Container */
+.single-product-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    background: #f5efe6;
+    border-radius: 8px;
+    border: 1px solid #a67c52;
+  }
+  
+  /* Product Title */
+  .single-product-title {
+    font-size: 2rem;
+    text-align: center;
+    color: #8b5e3b;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Layout Grid */
+  .single-product-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  /* Product Image */
+  .single-product-image-container {
+    flex: 1;
+    min-width: 300px;
+    max-width: 50%;
+  }
+  
+  .single-product-image {
+    width: 100%;
+    border-radius: 8px;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .single-product-image:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Product Details */
+  .single-product-details {
+    flex: 1;
+    max-width: 50%;
+  }
+  
+  .single-product-heading {
+    font-size: 1.8rem;
+    color: #8b5e3b;
+    margin-bottom: 1rem;
+  }
+  
+  .single-product-description {
+    font-size: 1rem;
+    color: #6b4226;
+    margin-bottom: 1rem;
+  }
+  
+  .single-product-category,
+  .single-product-published,
+  .single-product-price {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: #6b4226;
+  }
+  
+  .old-price {
+    text-decoration: line-through;
+    color: gray;
+    margin-left: 8px;
+  }
+  
+  /* Quantity Input */
+  .single-product-quantity {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+  }
+  
+  .single-product-quantity input {
+    width: 60px;
+    text-align: center;
+    border: 1px solid #a67c52;
+    padding: 5px;
+    font-size: 1rem;
+  }
+  
+  /* Add to Cart Button */
+  .add-to-cart-btn {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .add-to-cart-btn.active {
+    background-color: #8b5e3b;
+    color: white;
+  }
+  
+  .add-to-cart-btn.active:hover {
+    background-color: #6b4226;
+  }
+  
+  .add-to-cart-btn.disabled {
+    background-color: gray;
+    cursor: not-allowed;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .single-product-content {
+      flex-direction: column;
+    }
+    .single-product-image-container {
+      max-width: 100%;
+    }
+    .single-product-details {
+      max-width: 100%;
+    }
+  }

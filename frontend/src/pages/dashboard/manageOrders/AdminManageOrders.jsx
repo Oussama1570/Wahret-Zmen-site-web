@@ -182,30 +182,31 @@ const AdminManageOrders = () => {
                                         </select>
                                     </td>
                                     <td className="px-6 py-3 border">
-                                        <div className="flex flex-col items-center space-y-2">
-                                            {editingOrder !== order._id ? (
-                                                <button
-                                                    onClick={() => startEditingOrder(order)}
-                                                    className="bg-yellow-500 py-2 px-4 w-24 rounded-full text-white text-sm hover:bg-yellow-600 transition"
-                                                >
-                                                    Modifier
-                                                </button>
-                                            ) : (
-                                                <button
-                                                    onClick={() => handleEdit(order._id, order)}
-                                                    className="bg-blue-500 py-2 px-4 w-24 rounded-full text-white text-sm hover:bg-blue-600 transition"
-                                                >
-                                                    Enregistrer
-                                                </button>
-                                            )}
-                                            <button
-                                                onClick={() => handleDelete(order._id)}
-                                                className="bg-red-500 py-2 px-4 w-24 rounded-full text-white text-sm hover:bg-red-600 transition"
-                                            >
-                                                Supprimer
-                                            </button>
-                                        </div>
-                                    </td>
+    <div className="flex justify-center items-center gap-4">
+        {editingOrder !== order._id ? (
+            <button
+                onClick={() => startEditingOrder(order)}
+                className="bg-yellow-500 py-2 px-4 min-w-[100px] rounded-full text-white text-sm hover:bg-yellow-600 transition"
+            >
+                Modifier
+            </button>
+        ) : (
+            <button
+                onClick={() => handleEdit(order._id, order)}
+                className="bg-blue-500 py-2 px-4 min-w-[100px] rounded-full text-white text-sm hover:bg-blue-600 transition"
+            >
+                Enregistrer
+            </button>
+        )}
+        <button
+            onClick={() => handleDelete(order._id)}
+            className="bg-red-500 py-2 px-4 min-w-[100px] rounded-full text-white text-sm hover:bg-red-600 transition"
+        >
+            Supprimer
+        </button>
+    </div>
+</td>
+
                                 </tr>
                             ))}
                         </tbody>

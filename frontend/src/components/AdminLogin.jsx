@@ -11,7 +11,8 @@ const AdminLogin = () => {
   const [message, setMessage] = useState("");
   const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === "ar"; // Detect Arabic language
 
   const showSuccessAlert = (title, text) => {
     Swal.fire({
@@ -63,7 +64,10 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-[#F4EEE0]">
+    <div
+      dir={isRTL ? "rtl" : "ltr"} 
+      className="flex justify-center items-center min-h-screen bg-[#F4EEE0]"
+    >
       <div className="w-full max-w-md bg-white p-8 shadow-lg rounded-lg">
         <h2 className="text-[#8B5C3E] text-2xl font-semibold text-center mb-4">
           {t("admin.title")}
@@ -72,8 +76,11 @@ const AdminLogin = () => {
         {message && <p className="text-red-500 text-center mb-3">{message}</p>}
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div>
-            <label className="block text-gray-700 font-medium mb-1" htmlFor="username">
+          <div className={isRTL ? "text-right" : "text-left"}>
+            <label 
+              className="block text-gray-700 font-medium mb-1"
+              htmlFor="username"
+            >
               {t("admin.username_label")}
             </label>
             <input
@@ -82,12 +89,13 @@ const AdminLogin = () => {
               name="username"
               id="username"
               placeholder={t("admin.username_placeholder")}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#8B5C3E] focus:outline-none"
+              className={`w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#8B5C3E] focus:outline-none 
+                ${isRTL ? "rtl:pr-3 rtl:pl-0" : ""}`}
             />
             {errors.username && <p className="text-red-500 text-sm">{t("admin.username_required")}</p>}
           </div>
 
-          <div>
+          <div className={isRTL ? "text-right" : "text-left"}>
             <label className="block text-gray-700 font-medium mb-1" htmlFor="password">
               {t("admin.password_label")}
             </label>
@@ -97,7 +105,8 @@ const AdminLogin = () => {
               name="password"
               id="password"
               placeholder={t("admin.password_placeholder")}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#8B5C3E] focus:outline-none"
+              className={`w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#8B5C3E] focus:outline-none 
+                ${isRTL ? "rtl:pr-3 rtl:pl-0" : ""}`}
             />
             {errors.password && <p className="text-red-500 text-sm">{t("admin.password_required")}</p>}
           </div>

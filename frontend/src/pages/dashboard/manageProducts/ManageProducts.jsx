@@ -6,30 +6,38 @@ import {
 import Swal from "sweetalert2";
 import { getImgUrl } from "../../../utils/getImgUrl";
 
+
 const ManageProducts = () => {
   const { data: products, isLoading, isError, refetch } = useGetAllProductsQuery();
   const [deleteProduct, { isLoading: deleting }] = useDeleteProductMutation();
 
+  const categoryMapping = {
+    "Men": "Hommes",
+    "Women": "Femmes",
+    "Children": "Enfants",
+  };
+  
+
   const handleDeleteProduct = async (id) => {
     const confirmResult = await Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: "Êtes-vous sûr ?",
+      text: "Vous ne pourrez pas revenir en arrière !",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
       cancelButtonColor: "#3085d6",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Oui, supprimez-le !",
     });
 
     if (confirmResult.isConfirmed) {
       try {
         await deleteProduct(id).unwrap();
-        Swal.fire("Deleted!", "The product has been deleted.", "success");
+        Swal.fire("Supprimé !", "Le produit a été supprimé.", "success");
         refetch();
       } catch (error) {
         Swal.fire(
-          "Error!",
-          error?.data?.message || "Failed to delete product. Please try again.",
+          "Erreur !",
+          error?.data?.message || "Échec de la suppression du produit. Veuillez réessayer.",
           "error"
         );
       }
@@ -88,11 +96,8 @@ const ManageProducts = () => {
 
                                     {/* Category */}
                                     <td className="p-4 border border-gray-300 align-middle capitalize text-gray-700">
-                                        {["Men", "Women", "Children"].includes(product.category)
-                                            ? product.category
-                                            : "Non classifié"}
-                                    </td>
-
+  {categoryMapping[product.category] || "Non classifié"}
+</td>
                                     {/* Colors with Flex Wrap and Sorted */}
                                     <td className="p-4 border border-gray-300 align-middle">
                                         <div className="flex flex-wrap items-center gap-4">
@@ -135,23 +140,25 @@ const ManageProducts = () => {
                                     </td>
 
                                     {/* Actions */}
-                                    <td className="p-4 border border-gray-300 align-middle">
-                                        <div className="flex flex-col items-center gap-2">
-                                            <Link
-                                                to={`/dashboard/edit-product/${product._id}`}
-                                                className="bg-blue-500 text-white px-4 py-1 rounded font-medium hover:bg-blue-700 w-24 text-center"
-                                            >
-                                                Modifier
-                                            </Link>
-                                            <button
-                                                onClick={() => handleDeleteProduct(product._id)}
-                                                disabled={deleting}
-                                                className="bg-red-500 text-white px-4 py-1 rounded font-medium hover:bg-red-700 w-24"
-                                            >
-                                                {deleting ? "Suppression..." : "Supprimer"}
-                                            </button>
-                                        </div>
-                                    </td>
+                                   {/* Actions */}
+<td className="p-4 border border-gray-300 align-middle">
+    <div className="flex justify-center items-center gap-4">
+        <Link
+            to={`/dashboard/edit-product/${product._id}`}
+            className="bg-blue-500 text-white px-4 py-1 rounded font-medium hover:bg-blue-700 min-w-[100px] text-center"
+        >
+            Modifier
+        </Link>
+        <button
+            onClick={() => handleDeleteProduct(product._id)}
+            disabled={deleting}
+            className="bg-red-500 text-white px-4 py-1 rounded font-medium hover:bg-red-700 min-w-[100px]"
+        >
+            {deleting ? "Suppression..." : "Supprimer"}
+        </button>
+    </div>
+</td>
+
                                 </tr>
                             ))
                         ) : (
