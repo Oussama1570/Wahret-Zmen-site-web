@@ -17,103 +17,78 @@ const Navbar = () => {
   const token = localStorage.getItem("token");
 
   const { t, i18n } = useTranslation();
-  const isRTL = i18n.dir() === "rtl"; // Detect Arabic
+  const isRTL = i18n.language === "ar";
 
   useEffect(() => {
-    document.body.dir = isRTL ? "rtl" : "ltr"; // Set page direction dynamically
+    document.body.dir = isRTL ? "rtl" : "ltr";
   }, [isRTL]);
 
-  const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setIsDropdownOpen(false);
-    }
-  };
-
   useEffect(() => {
-    if (isDropdownOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+      if (isMobileMenuOpen && !event.target.closest(".navbar-content")) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isDropdownOpen]);
+  }, [isDropdownOpen, isMobileMenuOpen]);
 
   return (
     <header className="navbar-container">
-      <nav className={`navbar-content ${isRTL ? "rtl" : ""}`}>
-        {/* Logo and Language Switcher */}
+      <nav className="navbar-content">
         <div className="navbar-left">
           <Link to="/" className="logo">
             <img src={logoImg} alt="Wahret Zmen Logo" className="logo-img" />
             <span className="logo-text">{t("navbar.brand")}</span>
           </Link>
-          <LanguageSwitcher />
+          
         </div>
 
-        {/* Mobile Menu Button */}
         <button
-          className={`mobile-menu-btn ${isMobileMenuOpen ? "open" : ""}`}
+          className="mobile-menu-btn"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? <FiX className="menu-icon" /> : <FiMenu className="menu-icon" />}
         </button>
 
-        {/* Navigation Menu */}
-        <ul className={`nav-links ${isMobileMenuOpen ? "open" : ""}`}>
-          <li>
-            <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>
-              {t("home")}
-            </Link>
-          </li>
-          <li>
-            <Link to="/products" onClick={() => setIsMobileMenuOpen(false)}>
-              {t("products")}
-            </Link>
-          </li>
-          <li>
-            <Link to="/about" onClick={() => setIsMobileMenuOpen(false)}>
-              {t("about-menu")}
-            </Link>
-          </li>
-          <li>
-            <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)}>
-              {t("contact-menu")}
-            </Link>
-          </li>
+        <ul className={`nav-links mobile-center ${isMobileMenuOpen ? "open" : ""}`}>
+          <li><Link to="/" onClick={() => setIsMobileMenuOpen(false)}>{t("home")}</Link></li>
+          <li><Link to="/products" onClick={() => setIsMobileMenuOpen(false)}>{t("products")}</Link></li>
+          <li><Link to="/about" onClick={() => setIsMobileMenuOpen(false)}>{t("about-menu")}</Link></li>
+          <li><Link to="/contact" onClick={() => setIsMobileMenuOpen(false)}>{t("contact-menu")}</Link></li>
         </ul>
 
-        {/* Icons (Cart & User) */}
         <div className="nav-icons">
-          {/* Cart Icon */}
+        <LanguageSwitcher />
           <Link to="/cart" className="cart-icon">
             <FiShoppingBag className="icon" />
             {cartItems.length > 0 && <span className="cart-badge">{cartItems.length}</span>}
           </Link>
-
-          {/* User Dropdown */}
+         
           {currentUser ? (
             <div className="user-menu" ref={dropdownRef}>
+              
               <button
-                className={`user-avatar-btn ${currentUser ? "logged-in" : ""}`}
+                className="user-avatar-btn"
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               >
-                <FiUser className={`user-icon ${currentUser ? "logged-in" : ""}`} />
+                <FiUser className="user-icon logged-in" />
+                
               </button>
+             
               {isDropdownOpen && (
                 <div className="user-dropdown active">
                   <ul>
-                    <li>
-                      <Link to="/user-dashboard">{t("dashboard")}</Link>
-                    </li>
-                    <li>
-                      <Link to="/orders">{t("orders")}</Link>
-                    </li>
-                    <li>
-                      <button onClick={logout}>{t("logout")}</button>
-                    </li>
+                    <li><Link to="/user-dashboard">{t("dashboard")}</Link></li>
+                    <li><Link to="/orders">{t("orders")}</Link></li>
+                    <li><button onClick={logout}>{t("logout")}</button></li>
                   </ul>
+                  
                 </div>
               )}
             </div>

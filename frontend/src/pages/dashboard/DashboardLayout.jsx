@@ -1,13 +1,14 @@
 import axios from 'axios';
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
-import { FaTachometerAlt, FaPlusCircle, FaTools } from "react-icons/fa";
-import { MdProductionQuantityLimits } from "react-icons/md"; // Product Management Icon
+import { FaTachometerAlt, FaPlusCircle, FaTools, FaBars, FaSignOutAlt } from "react-icons/fa";
+import { MdProductionQuantityLimits } from "react-icons/md";
 import Swal from 'sweetalert2';
 import { Helmet } from 'react-helmet';
 
 const DashboardLayout = () => {
   const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleLogout = async () => {
     const result = await Swal.fire({
@@ -34,51 +35,46 @@ const DashboardLayout = () => {
   };
 
   return (
-    <section dir="ltr" className="flex md:bg-gray-100 min-h-screen overflow-hidden"> {/* ⬅️ Forces LTR */}
+    <section dir="ltr" className="flex min-h-screen bg-gray-100 overflow-hidden">
       <Helmet>
         <title>Votre Tableau de Bord Administrateur</title>
       </Helmet>
 
+      {/* Mobile Sidebar Toggle */}
+      <button 
+        className="md:hidden p-3 bg-[#8B5C3E] text-white fixed top-4 left-4 rounded-lg z-50 shadow-lg"
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+      >
+        <FaBars className="h-6 w-6" />
+      </button>
+
       {/* Sidebar */}
-      <aside className="hidden sm:flex sm:flex-col bg-gray-800 text-white">
-        <a href="/" className="inline-flex items-center justify-center h-20 w-20 bg-[#8B5C3E] hover:bg-[#74452D] transition-all">
-          <img src="/fav-icon.png" alt="Logo" />
+      <aside className={`fixed md:relative md:flex flex-col bg-gray-800 text-white min-h-screen w-14 p-2 transition-transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 z-40 shadow-lg`}>
+        <a href="/" className="flex items-center justify-center h-14 bg-[#8B5C3E] hover:bg-[#74452D] transition-all rounded-lg">
+          <img src="/fav-icon.png" alt="Logo" className="w-6 h-6" />
         </a>
-        <div className="flex-grow flex flex-col justify-between">
-          <nav className="flex flex-col mx-4 my-6 space-y-4">
-            <Link to="/dashboard" className="inline-flex items-center justify-center py-3 text-white bg-[#8B5C3E] rounded-lg">
-              <span className="sr-only">Tableau de Bord</span>
-              <FaTachometerAlt className="h-6 w-6" />
-            </Link>
-
-            <Link to="/dashboard/add-new-product" className="inline-flex items-center justify-center py-3 text-gray-300 hover:text-white hover:bg-[#8B5C3E] rounded-lg transition-all">
-              <span className="sr-only">Ajouter un Produit</span>
-              <FaPlusCircle className="h-6 w-6"/>
-            </Link>
-
-            <Link to="/dashboard/manage-products" className="inline-flex items-center justify-center py-3 text-gray-300 hover:text-white hover:bg-[#8B5C3E] rounded-lg transition-all">
-              <span className="sr-only">Gérer les Produits</span>
-              <MdProductionQuantityLimits className="h-6 w-6"/>
-            </Link>
-          </nav>
-
-          <div className="inline-flex items-center justify-center h-20 w-20 border-t border-gray-700">
-            <button onClick={handleLogout} className="p-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-all focus:ring-2 focus:ring-red-500">
-              <span className="sr-only">Se Déconnecter</span>
-              <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-              </svg>
-            </button>
-          </div>
+        <nav className="flex flex-col mt-4 space-y-2 items-center flex-grow">
+          <Link to="/dashboard" className="flex items-center justify-center p-2 w-full bg-[#8B5C3E] rounded-lg text-white hover:bg-[#74452D] transition-all">
+            <FaTachometerAlt className="h-4 w-4" />
+          </Link>
+          <Link to="/dashboard/add-new-product" className="flex items-center justify-center p-2 w-full text-gray-300 hover:text-white hover:bg-[#8B5C3E] rounded-lg transition-all">
+            <FaPlusCircle className="h-4 w-4" />
+          </Link>
+          <Link to="/dashboard/manage-products" className="flex items-center justify-center p-2 w-full text-gray-300 hover:text-white hover:bg-[#8B5C3E] rounded-lg transition-all">
+            <MdProductionQuantityLimits className="h-4 w-4" />
+          </Link>
+        </nav>
+        <div className="p-2 flex justify-center">
+          <button onClick={handleLogout} className="p-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-all flex items-center justify-center">
+            <FaSignOutAlt className="h-4 w-4" />
+          </button>
         </div>
       </aside>
 
       {/* Main Dashboard Content */}
-      <div className="flex-grow text-gray-800">
-        {/* Header */}
-        <header className="bg-white shadow-md py-4 px-6 flex justify-between items-center">
+      <div className="flex-grow text-gray-800 overflow-hidden ml-4">
+        <header className="bg-white shadow-md py-4 px-6 flex justify-between items-center sticky top-0 z-30">
           <h1 className="text-2xl font-semibold text-[#8B5C3E]">Tableau de Bord</h1>
-
           <div className="flex items-center space-x-4">
             <Link to="/dashboard/add-new-product">
               <button className="inline-flex items-center py-2 px-4 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-all">
@@ -86,22 +82,20 @@ const DashboardLayout = () => {
                 Ajouter un Produit
               </button>
             </Link>
-
             <Link to="/dashboard/manage-products">
               <button className="inline-flex items-center py-2 px-4 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition-all">
                 <FaTools className="h-5 w-5 mr-2" />
                 Gérer les Produits
               </button>
             </Link>
-
             <button onClick={handleLogout} className="inline-flex items-center py-2 px-4 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition-all">
-            Se Déconnecter
+              Se Déconnecter
             </button>
           </div>
         </header>
 
         {/* Main Content */}
-        <main className="p-6 sm:p-10 space-y-6">
+        <main className="p-6 sm:p-10 space-y-6 overflow-hidden">
           <div className="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">
             <div className="mr-6">
               <h2 className="text-gray-600 ml-0.5">Inventaire du Magasin de Produits</h2>

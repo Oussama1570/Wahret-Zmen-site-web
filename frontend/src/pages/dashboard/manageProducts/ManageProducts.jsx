@@ -84,15 +84,17 @@ const ManageProducts = () => {
 
                                     {/* Product Image + Title */}
                                     <td className="p-4 border border-gray-300">
-                                        <div className="flex items-center gap-4">
-                                            <img
-                                                src={getImgUrl(product.coverImage)}
-                                                alt={product.title}
-                                                className="w-16 h-16 rounded-lg object-cover border"
-                                            />
-                                            <span className="font-medium text-gray-800">{product.title}</span>
-                                        </div>
-                                    </td>
+  <div className="flex flex-col items-center justify-center text-center">
+  <span className="font-medium text-gray-800 mt-2">{product.title}</span>
+    <img
+      src={getImgUrl(product.coverImage)}
+      alt={product.title}
+      className="w-16 h-16 rounded-lg object-cover border mx-auto"
+    />
+    
+  </div>
+</td>
+
 
                                     {/* Category */}
                                     <td className="p-4 border border-gray-300 align-middle capitalize text-gray-700">

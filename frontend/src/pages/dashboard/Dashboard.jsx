@@ -48,15 +48,15 @@ const Dashboard = () => {
 
   return (
     <div dir="ltr" className="p-4 lg:p-8 overflow-x-auto whitespace-nowrap dashboard-container">
-      {/* Dashboard Statistics - Horizontal Scroll on Small Screens */}
-      <section className="flex gap-6 mb-6 min-w-max">
+      {/* Dashboard Statistics */}
+      <section className="flex flex-wrap gap-6 mb-6 justify-center md:justify-start">
         {[
           { icon: <FaUser className="h-6 w-6" />, value: data?.totalUsers, label: "Utilisateurs Totals", bgColor: "bg-purple-50", textColor: "text-purple-600", borderColor: "border-purple-300" },
           { icon: <FaBoxOpen className="h-6 w-6" />, value: data?.totalProducts, label: "Total des Produits", bgColor: "bg-blue-50", textColor: "text-blue-600", borderColor: "border-blue-300" },
           { icon: <FaChartLine className="h-6 w-6" />, value: `${data?.totalSales} USD`, label: "Total des Ventes", bgColor: "bg-green-50", textColor: "text-green-600", borderColor: "border-green-300" },
           { icon: <FaClipboardList className="h-6 w-6" />, value: data?.totalOrders, label: "Total des Commandes", bgColor: "bg-teal-50", textColor: "text-teal-600", borderColor: "border-teal-300" },
         ].map((stat, index) => (
-          <div key={index} className={`flex items-center p-6 shadow-md rounded-lg border ${stat.borderColor} ${stat.bgColor} min-w-[280px]`}>
+          <div key={index} className={`flex items-center p-6 shadow-md rounded-lg border ${stat.borderColor} ${stat.bgColor} min-w-[280px] w-full md:w-auto` }>
             <div className={`inline-flex items-center justify-center h-16 w-16 rounded-full mr-6 ${stat.textColor}`}>
               {stat.icon}
             </div>
@@ -68,7 +68,7 @@ const Dashboard = () => {
         ))}
       </section>
 
-      {/* Revenue Chart - Scrollable on Small Screens */}
+      {/* Revenue Chart */}
       <section className="flex flex-col lg:flex-row gap-6 overflow-x-auto">
         <div className="flex-1 bg-white shadow-md rounded-lg border border-gray-300 p-6 min-w-[600px]">
           <div className="font-semibold mb-4 text-lg">Le nombre de commandes par mois</div>

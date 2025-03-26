@@ -69,6 +69,7 @@
     .navbar-left {
       flex-direction: row;
       gap: 10px;
+      margin-left: 100px !important;
     }
   }
   
@@ -82,6 +83,7 @@
     font-size: 1.5rem;
     font-weight: bold;
     font-family: 'Cairo', sans-serif;
+    
   }
   
   .logo-img {
@@ -89,6 +91,7 @@
     height: auto;
     border-radius: 50%;
     margin-inline-end: 12px;
+    
   }
   
   /* Centered Navigation Menu */
@@ -109,31 +112,36 @@
 
 /* 📱 Mobile View */
 @media (max-width: 1024px) {
-  .nav-links {
-    position: absolute;
-    top: 80px;
-    left: 0;
-    width: 100%;
+  .nav-links.mobile-center {
+    position: fixed;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 85%;
+    max-width: 400px;
     background: white;
+    display: flex;
     flex-direction: column;
     align-items: center;
     padding: 1rem 0;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    display: none;
+    border-radius: 12px;
+    z-index: 1100;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
     opacity: 0;
-    transition: all 0.3s ease-in-out;
+    visibility: hidden;
   }
 
-  /* 🔥 Show when active */
+  /* Show menu when open */
   .nav-links.open {
-    display: flex;
+    transform: translateX(-50%) translateY(0);
     opacity: 1;
-  }
-
-  .nav-links li {
-    margin: 10px 0;
+    visibility: visible;
   }
 }
+
+
+ 
   .nav-links li {
     display: inline-block;
   }
@@ -146,7 +154,7 @@
     position: relative;
     padding: 0.5rem 0;
     transition: color 0.3s ease-in-out;
-    left: 50%;
+    left: 0%;
     
   }
   
@@ -461,52 +469,3 @@ html[dir="rtl"] .mobile-menu-btn {
     font-size: 1.6rem;
   }
     
-
-/* RTL Support */
-html[dir="rtl"] .navbar-content {
-  flex-direction: row-reverse; /* Flip the navbar layout */
-}
-
-html[dir="rtl"] .nav-links {
-  left: auto;
-  right: 50%;
-  transform: translate(50%, -50%);
-}
-
-html[dir="rtl"] .nav-links a {
-  left: 0; /* Reset left shift for proper alignment */
-}
-
-html[dir="rtl"] .cart-badge {
-  right: auto;
-  left: -10px; /* Move cart badge to the left */
-}
-
-/* Language Switcher Fix */
-html[dir="rtl"] .language-switcher {
-  order: -1; /* Move language switcher to the left */
-}
-
-/* Align User Menu Correctly */
-html[dir="rtl"] .user-menu {
-  direction: rtl;
-}
-
-html[dir="rtl"] .user-dropdown {
-  right: auto;
-  left: -20px; /* Move dropdown to the left */
-}
-
-/* Ensure navbar icons (cart, user) stay aligned */
-html[dir="rtl"] .nav-icons {
-  flex-direction: row-reverse;
-}
-
-/* Make sure hamburger menu aligns properly in RTL */
-html[dir="rtl"] .mobile-menu-btn {
-  margin-left: auto;
-  margin-right: 0;
-}
-  
-
-  
