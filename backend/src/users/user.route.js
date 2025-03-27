@@ -41,18 +41,17 @@ router.post("/admin", async (req, res) => {
   }
 });
 
-// ✅ Get total MongoDB users (no Firebase involved)
+// ✅ Get total users (MongoDB only)
 router.get("/admin/users/count", async (req, res) => {
   try {
     const mongoUsersCount = await User.countDocuments();
 
     return res.status(200).json({
-      totalMongoUsers: mongoUsersCount,
       totalUsers: mongoUsersCount,
     });
   } catch (error) {
-    console.error("Erreur lors du comptage des utilisateurs MongoDB:", error);
-    return res.status(500).json({ message: "Erreur interne du serveur" });
+    console.error("Error counting users:", error);
+    return res.status(500).json({ message: "Server error" });
   }
 });
 
