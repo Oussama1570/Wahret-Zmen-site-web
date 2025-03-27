@@ -267,16 +267,19 @@ i18n
             productRemoved: "{{qty}} item(s) removed from order.",
             productRemoveFailed: "Failed to remove product. Please try again."
           },
-          "cart": {
-    "item_added": "Item added to cart",
-    "item_removed": "Item removed from cart",
-    "quantity_decreased": "Item quantity decreased",
-    "cart_cleared": "Cart has been cleared",
-    "total": "Total",
-    "quantity": "Quantity",
-    "price": "Price",
-    "checkout": "Proceed to Checkout"
-  },
+
+          cart: {
+            title: "Cart",
+            clear_cart: "Clear Cart",
+            category: "Category",
+            color: "Color",
+            original: "Original",
+            qty: "Qty",
+            remove: "Remove",
+            empty: "Your cart is empty!",
+            subtotal: "Subtotal",
+            proceed_to_checkout: "Proceed to Checkout"
+          },
           checkout: {
             title: "Secure Checkout",
             payment_method: "Cash On Delivery",

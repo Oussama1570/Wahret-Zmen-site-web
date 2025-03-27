@@ -1,31 +1,15 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { FaTachometerAlt, FaPlusCircle, FaTools, FaBars, FaSignOutAlt } from "react-icons/fa";
 import { MdProductionQuantityLimits } from "react-icons/md";
 import Swal from 'sweetalert2';
 import { Helmet } from 'react-helmet';
 import HomeIcone from "../../../public/fav-icon.png";
-import getBaseUrl from '../../utils/baseURL';
 
 const DashboardLayout = () => {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [userStats, setUserStats] = useState(null);
-
-  // ✅ Fetch total users (MongoDB + Firebase)
-  useEffect(() => {
-    const fetchUserStats = async () => {
-      try {
-        const res = await axios.get(`${getBaseUrl()}/api/user/admin/users/count`);
-        setUserStats(res.data);
-      } catch (error) {
-        console.error("Erreur lors de la récupération des utilisateurs :", error);
-      }
-    };
-
-    fetchUserStats();
-  }, []);
 
   const handleLogout = async () => {
     const result = await Swal.fire({
@@ -96,37 +80,35 @@ const DashboardLayout = () => {
       </aside>
 
       {/* Main Content */}
-      <div className="flex-grow text-gray-800 overflow-hidden ml-4">
-        <header className="bg-white shadow-md py-4 px-6 flex flex-wrap justify-between items-center sticky top-0 z-30">
-          <div>
-            <h1 className="text-2xl font-semibold text-[#8B5C3E]">Tableau de Bord</h1>
-            {userStats && (
-              <p className="text-sm text-gray-500 mt-1">
-                Total Utilisateurs : {userStats.totalUsers} ({userStats.totalMongoUsers} Mongo / {userStats.totalFirebaseUsers} Firebase)
-              </p>
-            )}
-          </div>
+      <div className="flex-grow text-gray-800 overflow-auto ml-4">
+      <header className="bg-white shadow-md py-4 px-6 flex flex-col md:flex-row md:justify-between items-center sticky top-0 z-30">
+  <h1 className="text-2xl font-semibold text-[#8B5C3E] mb-4 md:mb-0">Tableau de Bord</h1>
+  <div className="flex flex-col md:flex-row items-center gap-3">
+    <Link to="/dashboard/add-new-product">
+      <button className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-all">
+        <FaPlusCircle className="h-5 w-5 mr-2" />
+        Ajouter un Produit
+      </button>
+    </Link>
+    <Link to="/dashboard/manage-products">
+      <button className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition-all">
+        <FaTools className="h-5 w-5 mr-2" />
+        Gérer les Produits
+      </button>
+    </Link>
+    <button 
+      onClick={handleLogout} 
+      className="flex items-center px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition-all"
+    >
+      <FaSignOutAlt className="h-5 w-5 mr-2" />
+      Se Déconnecter
+    </button>
+  </div>
+</header>
 
-          <div className="w-full flex flex-col md:flex-row md:items-center md:justify-end gap-2 mt-4 md:mt-0">
-            <Link to="/dashboard/add-new-product" className="w-full md:w-auto">
-              <button className="w-full md:w-auto inline-flex items-center justify-center py-2 px-4 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-all">
-                <FaPlusCircle className="h-5 w-5 mr-2" />
-                Ajouter un Produit
-              </button>
-            </Link>
-            <Link to="/dashboard/manage-products" className="w-full md:w-auto">
-              <button className="w-full md:w-auto inline-flex items-center justify-center py-2 px-4 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition-all">
-                <FaTools className="h-5 w-5 mr-2" />
-                Gérer les Produits
-              </button>
-            </Link>
-            <button onClick={handleLogout} className="w-full md:w-auto inline-flex items-center justify-center py-2 px-4 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition-all">
-              Se Déconnecter
-            </button>
-          </div>
-        </header>
 
-        <main className="p-6 sm:p-8 space-y-4 overflow-hidden">
+
+        <main className="p-6 sm:p-8 space-y-4 overflow-auto">
           <Outlet />
         </main>
       </div>

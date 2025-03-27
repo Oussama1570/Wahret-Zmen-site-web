@@ -212,8 +212,6 @@ if (!productFound) {
 
 
 
-
-
 // ✅ Send Order Notification via Email
 const sendOrderNotification = async (req, res) => {
   try {
@@ -241,24 +239,41 @@ const sendOrderNotification = async (req, res) => {
       return res.status(404).json({ message: "Product not found in order" });
     }
 
-    // Create the combined content for both French and Arabic
-    const subject = progress < 100 ? `Wahret Zmen - Product Update (${progress}%)` : `Wahret Zmen - Product Ready for Pickup!`;
+    const subject = progress === 100 ? 
+      `Wahret Zmen - Votre création est prête à être récupérée !` : 
+      `Wahret Zmen - Suivi de votre création (${progress}%)`;
 
     const htmlMessage = `
-      <p><strong>Cher ${customerName}</strong>,</p>
-      <p>Votre produit commandé <strong>${matchedProduct.productId.title}</strong> (Couleur : ${matchedProduct.color.colorName}) est maintenant <strong>${progress}% complété</strong>.</p>
-      <img src="${matchedProduct.color.image}" width="60" />
-      <p>Nous vous tiendrons informé lorsque ce sera entièrement prêt !</p>
-      <p>Cordialement,<br/>Boutique Wahret Zmen</p>
+      <div>
+        <!-- French Message -->
+        <p><strong>Cher ${customerName}</strong>,</p>
+        <p>
+          Nous avons le plaisir de vous informer que votre création artisanale <strong>${matchedProduct.productId.title}</strong>
+          (Couleur : ${matchedProduct.color.colorName}) est actuellement <strong>${progress}% confectionnée</strong> par notre atelier Wahret Zmen.
+        </p>
+        ${progress === 100 ? 
+          `<p><strong>Bonne nouvelle !</strong> Votre création est maintenant terminée et prête à être récupérée à notre boutique Wahret Zmen.</p>` : 
+          `<p>Nous vous tiendrons informé dès qu'elle sera entièrement finalisée et prête à être récupérée.</p>`
+        }
+        <p>Merci pour votre confiance,<br/>L’équipe Wahret Zmen</p>
 
-      <p><strong>عزيزي ${customerName}،</strong></p>
-      <p>تم إتمام المنتج الذي طلبته <strong>${matchedProduct.productId.title}</strong> (اللون: ${matchedProduct.color.colorName}) بنسبة <strong>${progress}%</strong>.</p>
-      <img src="${matchedProduct.color.image}" width="60" />
-      <p>سوف نعلمك مرة أخرى عندما يكون جاهزًا تمامًا!</p>
-      <p>مع أطيب التحيات,<br/>متجر Wahret Zmen</p>
+        <hr/>
+
+        <!-- Arabic Message -->
+        <p dir="rtl"><strong>عزيزي ${customerName}،</strong></p>
+        <p dir="rtl">
+          يسعدنا إعلامك بأن إبداعك التقليدي <strong>${matchedProduct.productId.title}</strong>
+          (اللون: <strong>${matchedProduct.color.colorName}</strong>)
+          تتم حياكته حاليًا بنسبة <strong>${progress}٪</strong> في ورشة وهرة الزمن.
+        </p>
+        ${progress === 100 ? 
+          `<p dir="rtl"><strong>أخبار سارة!</strong> لقد تم إتمام منتجك بالكامل وهو جاهز للاستلام في متجر وهرة الزمن.</p>` : 
+          `<p dir="rtl">سنعلمك فور اكتمالها وجاهزيتها للاستلام.</p>`
+        }
+        <p dir="rtl">شكراً لثقتك بنا،<br/>فريق وهرة الزمن</p>
+      </div>
     `;
 
-    // Create a mail transporter for sending emails
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -267,7 +282,6 @@ const sendOrderNotification = async (req, res) => {
       },
     });
 
-    // Send the email with both French and Arabic content
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
@@ -283,6 +297,9 @@ const sendOrderNotification = async (req, res) => {
     res.status(500).json({ message: "Error sending notification", error: error.message });
   }
 };
+
+
+
 
 
 module.exports = {

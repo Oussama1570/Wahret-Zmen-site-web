@@ -47,7 +47,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div dir="ltr" className="p-4 lg:p-8 overflow-x-auto whitespace-nowrap dashboard-container">
+    <div dir="ltr" className="p-4 lg:p-8 w-full max-w-[100vw] mx-auto">
       {/* Dashboard Statistics */}
       <section className="flex flex-wrap gap-6 mb-6 justify-center md:justify-start">
         {[
@@ -61,9 +61,8 @@ const Dashboard = () => {
               {stat.icon}
             </div>
             <div>
-            <span className="block text-gray-500">{stat.label}</span>
+              <span className="block text-gray-500">{stat.label}</span>
               <span className="block text-2xl font-bold">{stat.value}</span>
-              
             </div>
           </div>
         ))}

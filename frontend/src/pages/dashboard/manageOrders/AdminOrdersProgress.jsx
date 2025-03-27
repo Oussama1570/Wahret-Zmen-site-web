@@ -15,7 +15,7 @@ const AdminOrdersProgress = () => {
 
   const progressSteps = [20, 40, 60, 80, 100];
 
-  // ✅ Charger les progrès enregistrés au montage
+  // Load existing progress on mount
   useEffect(() => {
     if (orders) {
       const initial = {};
@@ -23,63 +23,91 @@ const AdminOrdersProgress = () => {
         const progressMap = order.productProgress || {};
         order.products.forEach(prod => {
           const productKey = `${prod.productId._id}|${prod.color.colorName}`;
-          initial[`${order._id}|${productKey}`] = progressMap[productKey] ?? 0; // ✅ Assurer une initialisation correcte
+          initial[`${order._id}|${productKey}`] = progressMap[productKey] ?? 0;
         });
       });
       setProgressChanges(initial);
     }
   }, [orders]);
-  
 
   const handleCheckboxChange = (key, value) => {
     if (editingProductKey === key) {
       setProgressChanges(prev => ({
         ...prev,
-        [key]: value, // ✅ Assurer que seul le produit correct est mis à jour
+        [key]: value,
       }));
     }
   };
-  
 
   const handleSave = async (orderId, productKey) => {
     const fullKey = `${orderId}|${productKey}`;
     const updatedValue = progressChanges[fullKey];
-  
+
     const order = orders.find(o => o._id === orderId);
     if (!order) {
-      Swal.fire("Erreur", "Commande non trouvée !", "error");
+      Swal.fire({
+        title: 'Erreur',
+        text: 'Commande non trouvée!',
+        icon: 'error',
+        confirmButtonText: 'OK',
+        customClass: {
+          confirmButton: 'btn btn-danger',
+        },
+      });
       return;
     }
-  
+
     const email = order.email;
     const updatedProgress = { ...order.productProgress, [productKey]: updatedValue };
-  
+
     try {
-      // ✅ Envoyer la demande de mise à jour
+      // Update order progress
       await updateOrder({ orderId, productProgress: updatedProgress }).unwrap();
-      Swal.fire("Enregistré !", "Le progrès a été enregistré.", "success");
-  
-      // ✅ Envoyer une notification automatique si nécessaire
+      Swal.fire({
+        title: 'Succès!',
+        text: 'Le progrès de la commande a été enregistré avec succès.',
+        icon: 'success',
+        confirmButtonText: 'OK',
+        customClass: {
+          confirmButton: 'btn btn-success',
+        },
+      });
+
+      // Send automatic notification if necessary
       if ([60, 100].includes(updatedValue) && productKey && email) {
         await sendNotification({ orderId, email, productKey, progress: updatedValue }).unwrap();
-        Swal.fire("Notification envoyée", `${updatedValue}% de l'email a été envoyé à ${order.name}`, "success");
+        Swal.fire({
+          title: 'Notification envoyée',
+          text: `Une notification a été envoyée à ${order.name} pour ${updatedValue}% de progression.`,
+          icon: 'info',
+          confirmButtonText: 'OK',
+          customClass: {
+            confirmButton: 'btn btn-info',
+          },
+        });
       }
-  
+
       setEditingProductKey(null);
-      refetch(); // ✅ Assure que l'interface utilisateur reflète les dernières données
+      refetch(); // Refresh the UI with the latest data
     } catch (error) {
-      console.error("Erreur lors de l'enregistrement/notification :", error);
-      Swal.fire("Erreur", "Échec de l'enregistrement du progrès.", "error");
+      console.error('Erreur lors de l\'enregistrement/notification:', error);
+      Swal.fire({
+        title: 'Erreur',
+        text: 'Échec de l\'enregistrement du progrès de la commande.',
+        icon: 'error',
+        confirmButtonText: 'OK',
+        customClass: {
+          confirmButton: 'btn btn-danger',
+        },
+      });
     }
   };
-  
 
   const handleEdit = (productKey) => {
     setEditingProductKey(productKey);
   };
 
   if (isLoading) return <p>Chargement des commandes...</p>;
-
 
   return (
     <div className="p-4">
