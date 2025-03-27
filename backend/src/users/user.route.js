@@ -3,42 +3,57 @@ const User = require('./user.model');
 const jwt = require('jsonwebtoken');
 
 const router = express.Router();
-
 const JWT_SECRET = process.env.JWT_SECRET_KEY;
 
+// ✅ Admin login
 router.post("/admin", async (req, res) => {
-    const { username, password } = req.body;
-    try {
-        const admin = await User.findOne({ username });
-        if (!admin) {
-            return res.status(404).send({ message: "Admin not found!" });
-        }
+  const { username, password } = req.body;
 
-        // Hash password comparison (assuming you store hashed passwords)
-        const isPasswordValid = admin.password === password; // Ideally use bcrypt here for password comparison
-        if (!isPasswordValid) {
-            return res.status(401).send({ message: "Invalid password!" });
-        }
-
-        const token = jwt.sign(
-            { id: admin._id, username: admin.username, role: admin.role },
-            JWT_SECRET,
-            { expiresIn: "30d" }  // Token now lasts 30 days
-        );
-
-        return res.status(200).json({
-            message: "Authentication successful",
-            token: token,
-            user: {
-                username: admin.username,
-                role: admin.role,
-            }
-        });
-
-    } catch (error) {
-        console.error("Failed to login as admin", error);
-        return res.status(500).send({ message: "Failed to login as admin" });
+  try {
+    const adminUser = await User.findOne({ username });
+    if (!adminUser) {
+      return res.status(404).send({ message: "Admin not found!" });
     }
+
+    const isPasswordValid = adminUser.password === password; // Ideally use bcrypt
+    if (!isPasswordValid) {
+      return res.status(401).send({ message: "Invalid password!" });
+    }
+
+    const token = jwt.sign(
+      { id: adminUser._id, username: adminUser.username, role: adminUser.role },
+      JWT_SECRET,
+      { expiresIn: "30d" }
+    );
+
+    return res.status(200).json({
+      message: "Authentication successful",
+      token,
+      user: {
+        username: adminUser.username,
+        role: adminUser.role,
+      },
+    });
+
+  } catch (error) {
+    console.error("Failed to login as admin", error);
+    return res.status(500).send({ message: "Failed to login as admin" });
+  }
+});
+
+// ✅ Get total MongoDB users (no Firebase involved)
+router.get("/admin/users/count", async (req, res) => {
+  try {
+    const mongoUsersCount = await User.countDocuments();
+
+    return res.status(200).json({
+      totalMongoUsers: mongoUsersCount,
+      totalUsers: mongoUsersCount,
+    });
+  } catch (error) {
+    console.error("Erreur lors du comptage des utilisateurs MongoDB:", error);
+    return res.status(500).json({ message: "Erreur interne du serveur" });
+  }
 });
 
 module.exports = router;

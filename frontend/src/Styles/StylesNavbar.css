@@ -103,11 +103,12 @@
     gap: 2rem;
     padding: 0;
     position: absolute;
-    left: 50%;
+    left: 46%;
     top: 50%;
     transform: translate(-50%, -50%);
     align-items: center;
     transition: all 0.3s ease-in-out;
+    
 }
 
 /* 📱 Mobile View */
@@ -119,7 +120,7 @@
     transform: translateX(-50%);
     width: 85%;
     max-width: 400px;
-    background: white;
+    background: #F8F9FA;;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -469,3 +470,9 @@ html[dir="rtl"] .mobile-menu-btn {
     font-size: 1.6rem;
   }
     
+/* Dashboard link placed at the edge of the navbar */
+.dashboard-link {
+  
+ 
+}
+
