@@ -10,6 +10,7 @@ import { Helmet } from "react-helmet";
 import LoadingSpinner from "../../components/Loading";
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
+import "../../Styles/StylesOrderPage.css"
 
 const OrderPage = () => {
   const { currentUser } = useAuth();
@@ -25,7 +26,7 @@ const OrderPage = () => {
 
   if (!userEmail) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen ">
         <p className="text-lg font-semibold text-gray-600">
           {t("ordersPage.pleaseLogin")}
         </p>
@@ -96,7 +97,7 @@ const OrderPage = () => {
   };
 
   return (
-    <div className="bg-gray-50 py-12 min-h-screen">
+    <div className="bg-gray-50 py-12 min-h-screen screen-Order-Page">
       <Helmet>
         <title>{t("ordersPage.title")}</title>
       </Helmet>

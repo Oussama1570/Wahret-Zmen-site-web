@@ -5,6 +5,7 @@ import { getImgUrl } from "../../../utils/getImgUrl";
 import { Helmet } from "react-helmet";
 import LoadingSpinner from "../../../components/Loading";
 import { useTranslation } from "react-i18next";
+import "../../../Styles/StylesUserDashboard.css"
 
 const UserDashboard = () => {
   const { currentUser } = useAuth();
@@ -24,7 +25,7 @@ const UserDashboard = () => {
         <title>{t("userDashboard.title")}</title>
       </Helmet>
 
-      <div className="max-w-5xl mx-auto bg-white shadow-lg rounded-lg p-8 border border-[#A67C52]">
+      <div className="max-w-5xl mx-auto bg-white shadow-lg rounded-lg p-8 border border-[#A67C52] screen-User-Dashboard">
         <h1 className="text-3xl font-bold text-[#A67C52] mb-2 text-center">
           {t("userDashboard.welcome", { name: customerName })}
         </h1>
